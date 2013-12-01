@@ -1,5 +1,5 @@
 {
-  "name": "GhostFiddle",
+  "name": "Raphael_test",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -7,13 +7,11 @@
   },
   "dependencies": {
     "express": "3.x",
-    "jade": "*",
-    "pi-gpio": "*"
+    "jade": "*"
   },
   "engines": {
     "node": "0.8.14",
     "npm": "1.1.65"
   }
 }
-
 

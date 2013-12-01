@@ -1,8 +1,25 @@
 body {
   padding: 30px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 1em "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: #999;
 }
 
 a {
   color: #00B7FF;
+}
+
+#holder {
+    height: 480px;
+    left: 25%;
+    margin: -240px 0 0 -320px;
+    position: absolute;
+    top: 40%;
+    width: 1000px;
+}
+
+#footer {
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    clear: both;
 }
