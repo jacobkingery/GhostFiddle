@@ -29,6 +29,7 @@ var test = 'test';
 
 app.get('/', raph.line);
 app.get('/success', raph.success);
+app.get('/failure', raph.failure);
 
 app.post('/submit', raph.addSong());
 
