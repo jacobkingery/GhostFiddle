@@ -1,6 +1,7 @@
 extends layout
 
 block header_scripts
+
     script(src='/javascripts/raphael.js')
     //- style.
         html {
@@ -21,15 +22,19 @@ block header_scripts
 
     script.
 
-        window.onload = function () {
+        window.onload = function() {
             var W = 1000,
                 H = 480,
-                r = Raphael("holder", W, H),
+                r = Raphael("raphHolder", W, H),
                 values = [],
                 len = 8;
+
+            // Data storage    
             for (var i = len; i--;) {
                 values.push(0);
             }
+
+            // Note selectors
             for (var i = len; i--;) {
                 r.circle(40+100*i,40, 15)
                     .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': values[i], 'stroke-opacity': 0.75})
@@ -46,16 +51,23 @@ block header_scripts
                         this.animate({'stroke-opacity' : 0.75}, 100);
                     });
             }
+
+            // Submit button
             r.circle(100, 100, 30)
                 .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': 0, 'stroke-opacity': 1})
                 .click(function() {
-                        console.log(values)
+                        document.getElementById('glass0').value = values.join('');
+                        document.getElementById('newSong').submit();
                     });
             
         };
 
 
 block content
-    div(id="holder")
+
+    div(id="raphHolder")
+    div(id="formHolder")
+        form(id="newSong", method="post", action="/submit")
+            input(id="glass0", type="hidden", name="glass0")
     //- div(id="footer")
         | <b><a href='http://github.com/jacobkingery/GhostFiddle' style='color: #111;'>Team Ghost Fiddle</a></b>
