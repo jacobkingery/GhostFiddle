@@ -12,3 +12,5 @@ with open("data/song0.txt") as f:
 for n in notes:
 	pwm.setPWM(0, 0, 3000*n)
 	sleep(2)
+
+pwm.setPWM(0, 0, 0)
