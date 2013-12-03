@@ -9,10 +9,6 @@ with open("data/song0.txt") as f:
 	for note in sequence:
 		notes.append(int(note))
 
-for i in range(5):
-	pwm.setPWM(0, 0, 3000)
+for n in notes:
+	pwm.setPWM(0, 0, 3000*n)
 	sleep(2)
-	pwm.setPWM(0, 0, 0)
-	sleep(2)
-
-
