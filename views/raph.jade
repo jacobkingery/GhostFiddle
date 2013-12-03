@@ -39,7 +39,7 @@ block header_scripts
             // Note selectors
             for (var i = len; i--;) {
                 for (var j = len; j--;){
-                    r.circle(40+100*i,40+100*j, 15)
+                    r.circle(40+100*i,40+40*j, 15)
                     .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': values[j][i], 'stroke-opacity': 0.75})
                     .data('x', i)
                     .data('y',j)
@@ -61,7 +61,14 @@ block header_scripts
             r.circle(100, 100, 30)
                 .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': 0, 'stroke-opacity': 1})
                 .click(function() {
-                        document.getElementById('glass0').value = values.join('');
+                        var s = "";
+                        console.log(values);
+                        for (var i = 0; i < len; i++){
+                            console.log(values[i]);
+                            s += values[i].join('')+"\n";
+                        }
+                        console.log(s);
+                        document.getElementById('glass0').value = s;
                         document.getElementById('newSong').submit();
                     });
             

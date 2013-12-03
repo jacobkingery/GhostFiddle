@@ -4,13 +4,11 @@ from time import sleep
 pwm = PWM(0x40, debug=True)
 
 with open("data/song0.txt") as f:
-	sequence = f.readline()
-	notes = []
-	for note in sequence:
-		notes.append(int(note))
-
-for n in notes:
-	pwm.setPWM(0, 0, 3000*n)
+	sequence = f.readlines()
+#print sequence	
+for i in range(len(sequence[0])-1):
+	for j in range(len(sequence)):
+		#print(j, 0, 3000*int(sequence[j][i]))
+		pwm.setPWM(j, 0, 3000*int(sequence[j][i]))
 	sleep(2)
-
 pwm.setPWM(0, 0, 0)
