@@ -6,8 +6,11 @@ pwm = PWM(0x40, debug=True)
 with open("data/song0.txt") as f:
 	notes = f.readline()
 
-for n in notes:
+noteLen = 2
+breakLen = 1
+
+for i, n in enumerate(notes):
 	pwm.setPWM(0, 0, 3000*int(n))
-	sleep(2)
+	sleep(noteLen*(not i%2) + breakLen*(i%2))
 
 pwm.setPWM(0, 0, 0)
