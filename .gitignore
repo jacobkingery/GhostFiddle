@@ -1,4 +1,4 @@
 node_modules
 *.save
 data
-Adafruit_*
+*.pyc
