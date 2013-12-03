@@ -25,18 +25,22 @@ block header_scripts
             var W = 1000,
                 H = 480,
                 r = Raphael("holder", W, H),
-                values = [],
+                values = [[],[],[],[],[],[],[],[]],
                 len = 8;
             for (var i = len; i--;) {
-                values.push(0);
+                for (var j = len; j--;){
+                    values[j].push(0);
+                }
             }
             for (var i = len; i--;) {
-                r.circle(40+100*i,40, 15)
-                    .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': values[i], 'stroke-opacity': 0.75})
-                    .data('id', i)
+                for (var j = len; j--;){
+                    r.circle(40+100*i,40+100*j, 15)
+                    .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': values[j][i], 'stroke-opacity': 0.75})
+                    .data('x', i)
+                    .data('y',j)
                     .click(function () {
                         var new_op = +!this.attr('fill-opacity');
-                        values[this.data('id')] = new_op;                        
+                        values[this.data('y')][this.data('x')] = new_op;                        
                         this.animate({'fill-opacity' : new_op}, 200);
                     })
                     .mouseover(function() {
@@ -45,6 +49,7 @@ block header_scripts
                     .mouseout(function() {
                         this.animate({'stroke-opacity' : 0.75}, 100);
                     });
+                }
             }
             r.circle(100, 100, 30)
                 .attr({fill: "#199", stroke: "#000", 'stroke-width': 2, 'fill-opacity': 0, 'stroke-opacity': 1})
