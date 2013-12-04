@@ -37,10 +37,10 @@ block header_scripts
             for (var i = 0; i < numGlass; i++) {
                 notes.push([]);
                 pauses.push([]);
-                for (var j = 0; j < lenSong; j++){
+                for (var j = 0; j < lenSong; j++) {
                     notes[i].push(0);
                 }
-                for (var j = 0; j < lenSong-1; j++){
+                for (var j = 0; j < lenSong-1; j++) {
                     pauses[i].push(0);
                 }
             }
@@ -68,12 +68,14 @@ block header_scripts
                         })
                         .hover(function() {
                                 if (!pauses[this.data('y')][this.data('x')]){
-                                    this.animate({y: this.attr('y')-2.5, height: lgRectHeight}, 1);
+                                    this.transform('s1, 1.5');
+                                    //- this.animate({height: lgRectHeight}, 0);
                                 }
                             },
                             function() {
                                 if (!pauses[this.data('y')][this.data('x')]){
-                                    this.animate({y: this.attr('y')+2.5, height: smRectHeight}, 1);
+                                    this.transform('s1, 1');
+                                    //- this.animate({height: smRectHeight}, 0);
                                 }
                             });
                 }
@@ -117,15 +119,22 @@ block header_scripts
                 subRect.animate({'fill-opacity' : .75}, 200);
                 })
             subButton.click(function() {
-                var s = "";
-                   console.log(notes);
-                   for (var i = 0; i < numGlass; i++){
-                       console.log(notes[i]);
-                       s += notes[i].join('')+"\n";
-                   }
-                   console.log(s);
-                   document.getElementById('notes').value = s;
-                   document.getElementById('newSong').submit();
+                var n = "";
+                var p = "";
+                //- console.log(notes);
+                for (var i = 0; i < numGlass; i++){
+                    //- console.log(notes[i]);
+                    n += notes[i].join('')+"\n";
+                }
+                //- console.log(s);
+                for (var i = 0; i < numGlass; i++){
+                    console.log(notes[i]);
+                    p += pauses[i].join('')+"\n";
+                }
+
+                document.getElementById('notes').value = n;
+                document.getElementById('pauses').value = p;
+                document.getElementById('newSong').submit();
             });
 
         };

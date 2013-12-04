@@ -15,16 +15,21 @@ exports.failure = function(req, res) {
 
 exports.addSong = function() {
     return function(req, res) {
-        var notes = req.body.notes;
-        var pauses = req.body.pauses;
+        var notes = req.body.notes.split('\n');
+        var pauses = req.body.pauses.split('\n');
+        notes = notes.slice(0, notes.length-1);
+        pauses = pauses.slice(0, pauses.length-1);
         var song = "";
-
-        for (var i = 0; i < pauses.length; i++){
-            song += notes[i] + pauses[i];
+        console.log(notes);
+        console.log(pauses);
+        for (var i = 0; i < pauses.length; i++) {
+            for (var j = 0; j < pauses[i].length; j++) {
+                song += notes[i][j] + pauses[i][j];
+            }
+            song += notes[i][j+1];
         }
-        song += notes[notes.length];
 
-        fs.writeFile("./data/song0.txt", notes, function(err) {
+        fs.writeFile("./data/song0.txt", song, function(err) {
             if(err) {
                 console.log(err);
                 res.location('failure');
