@@ -15,9 +15,16 @@ exports.failure = function(req, res) {
 
 exports.addSong = function() {
     return function(req, res) {
-        var glass0 = req.body.glass0;
+        var notes = req.body.notes;
+        var pauses = req.body.pauses;
+        var song = "";
 
-        fs.writeFile("./data/song0.txt", glass0, function(err) {
+        for (var i = 0; i < pauses.length; i++){
+            song += notes[i] + pauses[i];
+        }
+        song += notes[notes.length];
+
+        fs.writeFile("./data/song0.txt", notes, function(err) {
             if(err) {
                 console.log(err);
                 res.location('failure');

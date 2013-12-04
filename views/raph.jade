@@ -23,39 +23,76 @@ block header_scripts
     script.
 
         window.onload = function() {
+            // Raphael canvas
             var W = 1000,
                 H = 700,
-                r = Raphael("raphHolder", W, H),
-                lenSong = 12,
-                numGlass = 6,
-                values = [],
-                fill = ['#87E8D6','#FAE13C','#E43CFA','#3CFA58','#F24B96','#593AB5'];
+                r = Raphael("raphHolder", W, H);
+
             // Data storage    
+            var lenSong = 12,
+                numGlass = 6,
+                notes = [],
+                pauses = [];
+
             for (var i = 0; i < numGlass; i++) {
-                values.push([])
+                notes.push([]);
+                pauses.push([]);
                 for (var j = 0; j < lenSong; j++){
-                    values[i].push(0);
+                    notes[i].push(0);
+                }
+                for (var j = 0; j < lenSong-1; j++){
+                    pauses[i].push(0);
                 }
             }
 
+
             // Note selectors
+            var smRadius = 10,
+                lgRadius = 15,
+                smRectHeight = 10,
+                lgRectHeight = 15,
+                horSpacing = 80,
+                vertSpacing = 80,
+                fills = ['#87E8D6','#FAE13C','#E43CFA','#3CFA58','#F24B96','#593AB5'];
+
             for (var i = numGlass; i--;) {
+                for (var j = lenSong-1; j--;){
+                    r.rect(40+horSpacing*j+smRadius, 40+vertSpacing*i-smRadius/2, horSpacing-2*smRadius , smRectHeight)
+                        .attr({fill: fills[i], stroke: fills[i], 'fill-opacity': pauses[i][j]})
+                        .data('x', j)
+                        .data('y', i)
+                        .click(function () {
+                            var new_op = +!this.attr('fill-opacity');
+                            pauses[this.data('y')][this.data('x')] = new_op;                        
+                            this.animate({'fill-opacity' : new_op}, 200);
+                        })
+                        .hover(function() {
+                                if (!pauses[this.data('y')][this.data('x')]){
+                                    this.animate({y: this.attr('y')-2.5, height: lgRectHeight}, 1);
+                                }
+                            },
+                            function() {
+                                if (!pauses[this.data('y')][this.data('x')]){
+                                    this.animate({y: this.attr('y')+2.5, height: smRectHeight}, 1);
+                                }
+                            });
+                }
                 for (var j = lenSong; j--;){
-                    r.circle(40+80*j,40+80*i, 10)
-                    .attr({fill: fill[i], stroke: fill[i], 'stroke-width': 2, 'fill-opacity': values[i][j], 'stroke-opacity': 1})
+                    r.circle(40+horSpacing*j, 40+vertSpacing*i, smRadius)
+                    .attr({fill: fills[i], stroke: fills[i], 'stroke-width': 2, 'fill-opacity': notes[i][j], 'stroke-opacity': 1})
                     .data('x', j)
-                    .data('y',i)
+                    .data('y', i)
                     .click(function () {
                         var new_op = +!this.attr('fill-opacity');
-                        values[this.data('y')][this.data('x')] = new_op;                        
+                        notes[this.data('y')][this.data('x')] = new_op;                        
                         this.animate({'fill-opacity' : new_op}, 200);
                     })
                     .hover(function() {
-                        this.animate({ r: 20 }, 100,'elastic');
+                        this.animate({r: lgRadius}, 100,'elastic');
                     },
                     function() {
-                        if (!values[this.data('y')][this.data('x')]){
-                            this.animate({ r: 10 }, 100,'elastic');
+                        if (!notes[this.data('y')][this.data('x')]){
+                            this.animate({r: smRadius}, 100,'elastic');
                         }
                     });
                 }
@@ -81,13 +118,13 @@ block header_scripts
                 })
             subButton.click(function() {
                 var s = "";
-                   console.log(values);
+                   console.log(notes);
                    for (var i = 0; i < numGlass; i++){
-                       console.log(values[i]);
-                       s += values[i].join('')+"\n";
+                       console.log(notes[i]);
+                       s += notes[i].join('')+"\n";
                    }
                    console.log(s);
-                   document.getElementById('glass0').value = s;
+                   document.getElementById('notes').value = s;
                    document.getElementById('newSong').submit();
             });
 
@@ -99,6 +136,7 @@ block content
     div(id="raphHolder")
     div(id="formHolder")
         form(id="newSong", method="post", action="/submit")
-            input(id="glass0", type="hidden", name="glass0")
+            input(id="notes", type="hidden", name="notes")
+            input(id="pauses", type="hidden", name="pauses")
     //- div(id="footer")
         | <b><a href='http://github.com/jacobkingery/GhostFiddle' style='color: #111;'>Team Ghost Fiddle</a></b>
