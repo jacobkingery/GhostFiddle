@@ -53,9 +53,41 @@ block header_scripts
                 lgRectHeight = 15,
                 horSpacing = 80,
                 vertSpacing = 80,
-                fills = ['#87E8D6','#FAE13C','#E43CFA','#3CFA58','#F24B96','#593AB5'];
+                fills = ['#87E8D6','#FAE13C','#E43CFA','#3CFA58','#F24B96','#593AB5'],
+                glasses={};
+            var makeGlass = function (color) {
+                return {'glassNotes': [],
+                        'color': color,
+                        addNote: function (note) {this.glassNotes.push(note)}
+                        };
+                };
+            var makeNote = function (x,y) {
+                    var newNote = 
+                            {'x':x,
+                            'y':y,
+                            'state':0,
+                            'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
+                                .attr({fill: fills[x], stroke: fills[x], 'stroke-width': 2, 'fill-opacity': notes[x][y], 'stroke-opacity': 1})
+                                .click(function () {
+                                    var new_op = +!this.attr('fill-opacity');
+                                    notes[newNote.x][newNote.y] = new_op;                        
+                                    this.animate({'fill-opacity' : new_op}, 200);
+                                })
+                                .hover(function() {
+                                    this.animate({r: lgRadius}, 100,'elastic');
+                                },
+                                function() {
+                                    if (!notes[newNote.x][newNote.y]){
+                                        this.animate({r: smRadius}, 100,'elastic');
+                                    }
+                                })};
+                    return newNote;
+                } 
+            r.canvas.onmousedown(function () {console.log("hello")});
 
             for (var i = numGlass; i--;) {
+                glasses[i]=makeGlass(fills[i]);
+
                 for (var j = lenSong-1; j--;){
                     r.rect(40+horSpacing*j+smRadius, 40+vertSpacing*i-smRadius/2, horSpacing-2*smRadius , smRectHeight)
                         .attr({fill: fills[i], stroke: fills[i], 'fill-opacity': pauses[i][j]})
@@ -78,23 +110,7 @@ block header_scripts
                             });
                 }
                 for (var j = lenSong; j--;){
-                    r.circle(40+horSpacing*j, 40+vertSpacing*i, smRadius)
-                    .attr({fill: fills[i], stroke: fills[i], 'stroke-width': 2, 'fill-opacity': notes[i][j], 'stroke-opacity': 1})
-                    .data('x', j)
-                    .data('y', i)
-                    .click(function () {
-                        var new_op = +!this.attr('fill-opacity');
-                        notes[this.data('y')][this.data('x')] = new_op;                        
-                        this.animate({'fill-opacity' : new_op}, 200);
-                    })
-                    .hover(function() {
-                        this.animate({r: lgRadius}, 100,'elastic');
-                    },
-                    function() {
-                        if (!notes[this.data('y')][this.data('x')]){
-                            this.animate({r: smRadius}, 100,'elastic');
-                        }
-                    });
+                    glasses[i].addNote(makeNote(i,j));
                 }
             }
 
