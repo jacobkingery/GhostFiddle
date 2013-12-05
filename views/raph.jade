@@ -74,7 +74,7 @@ block header_scripts
                             'state':0,
                             'path':path = r.path("M"+(40+horSpacing*y)+" "+(40+vertSpacing*x)+"L"+(40+horSpacing*y)+" "+(40+vertSpacing*x))
                                         .attr({'stroke-width':smRectHeight,
-                                        stroke:'black'/*fills[x]*/})
+                                        stroke:fills[x]})
                                         .hide()
                                         ,
                             'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
@@ -88,18 +88,16 @@ block header_scripts
                                     }
                                 })
                                 .drag(function(dx,dy){
+                                        this.animate({r: lgRadius}, 100,'elastic');
                                         var pathArray = newNote.path.attr("path");
                                         pathArray[1][1] = 40+horSpacing*newNote.y+dx;
                                         //pathArray[1][2] = 40+vertSpacing*newNote.x+dy;
                                         newNote.path.attr({path:pathArray});
                                     },
                                     function(){
-                                        newNote.path.show();
-                                        var new_op = +!notes[newNote.x][newNote.y];
-                                        if(new_op){
-                                            notes[newNote.x][newNote.y] = 1;                        
-                                            newNote.circle.animate({'fill-opacity' : 1}, 200);
-                                        }
+                                        newNote.path.show();                                                              
+                                        newNote.circle.animate({'fill-opacity' : 1}, 200);
+                                        
                                     },
                                     function(){
                                         var pathArray = newNote.path.attr("path");
@@ -108,9 +106,9 @@ block header_scripts
                                         newNote.path.attr({path:pathArray});
                                         console.log(glassesTraversed);
                                         if(glassesTraversed < 0){
-                                            for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>0; j--){
+                                            for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>=0; j--){
                                                 glasses[newNote.x].glassNotes[j].highlight();
-                                                if( j > newNote.y+glassesTraversed &&j-1> 0){
+                                                if( j > newNote.y+glassesTraversed && j-1 >= 0){
                                                     glasses[newNote.x].glassPause[j-1].highlight();
                                                 }
                                             }
@@ -123,12 +121,13 @@ block header_scripts
                                             }
                                         }else{
                                             var new_op = +!notes[newNote.x][newNote.y];
+                                            notes[newNote.x][newNote.y] = new_op; 
                                             if(!new_op){
                                                 notes[newNote.x][newNote.y] = 0;                        
                                                 newNote.circle.animate({'fill-opacity' : 0}, 200);
                                                 if(newNote.y < lenSong-1)
                                                     glasses[newNote.x].glassPause[newNote.y].unhighlight();
-                                                if(newNote.y-1 > 0){
+                                                if(newNote.y-1 >= 0){
                                                     glasses[newNote.x].glassPause[newNote.y-1].unhighlight();
                                                 }
                                             }
