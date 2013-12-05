@@ -57,8 +57,13 @@ block header_scripts
                 glasses={};
             var makeGlass = function (color) {
                 return {'glassNotes': [],
+                        'glassPause': [],
                         'color': color,
-                        addNote: function (note) {this.glassNotes.push(note)}
+                        addNote: function (note) {this.glassNotes.push(note);},
+                        addPause: function (pause) {this.glassPause.push(pause);
+                                                    console.log("pushed pause");
+                                                    }
+                        
                         };
                 };
             var path = r.path("M0 0L0 0").hide();
@@ -69,7 +74,7 @@ block header_scripts
                             'state':0,
                             'path':path = r.path("M"+(40+horSpacing*y)+" "+(40+vertSpacing*x)+"L"+(40+horSpacing*y)+" "+(40+vertSpacing*x))
                                         .attr({'stroke-width':smRectHeight,
-                                        stroke:fills[x]})
+                                        stroke:'black'/*fills[x]*/})
                                         .hide()
                                         ,
                             'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
@@ -90,19 +95,48 @@ block header_scripts
                                     },
                                     function(){
                                         newNote.path.show();
-                                        var new_op = +!newNote.circle.attr('fill-opacity');
-                                        notes[newNote.x][newNote.y] = new_op;                        
-                                        newNote.circle.animate({'fill-opacity' : new_op}, 200);
+                                        var new_op = +!notes[newNote.x][newNote.y];
+                                        if(new_op){
+                                            notes[newNote.x][newNote.y] = 1;                        
+                                            newNote.circle.animate({'fill-opacity' : 1}, 200);
+                                        }
                                     },
                                     function(){
                                         var pathArray = newNote.path.attr("path");
                                         var glassesTraversed = Math.round((pathArray[1][1]-(40+horSpacing*newNote.y))/horSpacing);
+                                        pathArray[1][1] = 40+horSpacing*(newNote.y+glassesTraversed);
+                                        newNote.path.attr({path:pathArray});
                                         console.log(glassesTraversed);
-                                        if(glassesTraversed > 0){
-                                            for(var i = newNote.y; i<newNote.y+glassesTraversed+1 && i<lenSong; i++){
-                                                glasses[newNote.x].glassNotes[i].highlight();
+                                        if(glassesTraversed < 0){
+                                            for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>0; j--){
+                                                glasses[newNote.x].glassNotes[j].highlight();
+                                                if( j > newNote.y+glassesTraversed &&j-1> 0){
+                                                    glasses[newNote.x].glassPause[j-1].highlight();
+                                                }
+                                            }
+                                        }else if(glassesTraversed>0){
+                                            for(var j = newNote.y; j<newNote.y+glassesTraversed+1 && j<lenSong; j++){
+                                                glasses[newNote.x].glassNotes[j].highlight();
+                                                if(j<newNote.y+glassesTraversed&&j<lenSong-1){
+                                                    glasses[newNote.x].glassPause[j].highlight();
+                                                }
+                                            }
+                                        }else{
+                                            var new_op = +!notes[newNote.x][newNote.y];
+                                            if(!new_op){
+                                                notes[newNote.x][newNote.y] = 0;                        
+                                                newNote.circle.animate({'fill-opacity' : 0}, 200);
+                                                if(newNote.y < lenSong-1)
+                                                    glasses[newNote.x].glassPause[newNote.y].unhighlight();
+                                                if(newNote.y-1 > 0){
+                                                    glasses[newNote.x].glassPause[newNote.y-1].unhighlight();
+                                                }
                                             }
                                         }
+                                        pathArray[1][1] = 40+horSpacing*newNote.y;
+                                        newNote.path.attr({path:pathArray});
+                                        newNote.path.hide();
+
                                         this.dx = this.dy = 0;
                                     }),
                             'highlight': (function(){
@@ -114,21 +148,28 @@ block header_scripts
                         };
                     return newNote;
                 }
-
-            for (var i = 0; i<numGlass; i++) {
-                glasses[i]=makeGlass(fills[i]);
-
-                for (var j = 0; j<lenSong; j++){
-                    r.rect(40+horSpacing*j+smRadius, 40+vertSpacing*i-smRadius/2, horSpacing-2*smRadius , smRectHeight)
-                        .attr({fill: fills[i], stroke: fills[i], 'fill-opacity': pauses[i][j]})
-                        .data('x', j)
-                        .data('y', i)
+            var makePause = function (x,y){
+                var newPause = {'x':x,
+                        'y':y,
+                        'state':0,
+                        'rect':
+                        r.rect(40+horSpacing*y+smRadius, 40+vertSpacing*x-smRadius/2, horSpacing-2*smRadius , smRectHeight)
+                        .attr({fill: fills[x], stroke: fills[x], 'fill-opacity': pauses[x][y]})
                         .click(function () {
-                            var new_op = +!this.attr('fill-opacity');
-                            pauses[this.data('y')][this.data('x')] = new_op;                        
-                            this.animate({'fill-opacity' : new_op}, 200);
+                            newPause.unhighlight();
                         })
-                        .hide();
+                        .hide(),
+                        'highlight': (function(){
+                            pauses[newPause.x][newPause.y] = 1;
+                            newPause.rect.show();
+                            newPause.rect.animate({'fill-opacity' : 1}, 200);
+                            }),
+                        'unhighlight': (function(){
+                            pauses[newPause.x][newPause.y] = 0;
+                            newPause.rect.animate({'fill-opacity' : 0}, 200);
+                            newPause.rect.hide();
+                            
+                            }),
                         /*.hover(function() {
                                 if (!pauses[this.data('y')][this.data('x')]){
                                     this.animate({y: this.attr('y')-2.5, height: lgRectHeight}, 1);
@@ -138,7 +179,16 @@ block header_scripts
                                 if (!pauses[this.data('y')][this.data('x')]){
                                     this.animate({y: this.attr('y')+2.5, height: smRectHeight}, 1);
                                 }
+                                }
                             });*/
+                        }
+                return newPause;   
+            }
+            for (var i = 0; i<numGlass; i++) {
+                glasses[i]=makeGlass(fills[i]);
+
+                for (var j = 0; j<lenSong-1; j++){
+                    glasses[i].addPause(makePause(i,j));
                 }
                 for (var j = 0; j<lenSong; j++){
                     glasses[i].addNote(makeNote(i,j));
