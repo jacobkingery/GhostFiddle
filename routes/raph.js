@@ -15,8 +15,8 @@ exports.failure = function(req, res) {
 
 exports.addSong = function() {
     return function(req, res) {
-        var notes = req.body.notes.split('\n');
-        var pauses = req.body.pauses.split('\n');
+        var notes = req.body.notes.split('\r\n');
+        var pauses = req.body.pauses.split('\r\n');
         notes = notes.slice(0, notes.length-1);
         pauses = pauses.slice(0, pauses.length-1);
 
@@ -25,6 +25,7 @@ exports.addSong = function() {
             for (var j = 0; j < pauses[i].length; j++) {
                 song += notes[i][j] + pauses[i][j];
             }
+            song += notes[i][notes[i].length-1] + '\n';
         }
 
         fs.writeFile("./data/song0.txt", song, function(err) {
