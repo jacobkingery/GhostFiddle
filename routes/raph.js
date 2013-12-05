@@ -19,14 +19,12 @@ exports.addSong = function() {
         var pauses = req.body.pauses.split('\n');
         notes = notes.slice(0, notes.length-1);
         pauses = pauses.slice(0, pauses.length-1);
+
         var song = "";
-        console.log(notes);
-        console.log(pauses);
         for (var i = 0; i < pauses.length; i++) {
             for (var j = 0; j < pauses[i].length; j++) {
                 song += notes[i][j] + pauses[i][j];
             }
-            song += notes[i][j+1];
         }
 
         fs.writeFile("./data/song0.txt", song, function(err) {
