@@ -1,7 +1,7 @@
 extends layout
 
 block header_scripts
-
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js")
     script(src='/javascripts/raphael.js')
     //- style.
         html {
@@ -61,18 +61,19 @@ block header_scripts
                         addNote: function (note) {this.glassNotes.push(note)}
                         };
                 };
+            var path = r.path("M0 0L0 0").hide();
             var makeNote = function (x,y) {
                     var newNote = 
                             {'x':x,
                             'y':y,
                             'state':0,
+                            'path':path = r.path("M"+(40+horSpacing*y)+" "+(40+vertSpacing*x)+"L"+(40+horSpacing*y)+" "+(40+vertSpacing*x))
+                                        .attr({'stroke-width':smRectHeight,
+                                        stroke:fills[x]})
+                                        .hide()
+                                        ,
                             'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
                                 .attr({fill: fills[x], stroke: fills[x], 'stroke-width': 2, 'fill-opacity': notes[x][y], 'stroke-opacity': 1})
-                                .click(function () {
-                                    var new_op = +!this.attr('fill-opacity');
-                                    notes[newNote.x][newNote.y] = new_op;                        
-                                    this.animate({'fill-opacity' : new_op}, 200);
-                                })
                                 .hover(function() {
                                     this.animate({r: lgRadius}, 100,'elastic');
                                 },
@@ -80,15 +81,44 @@ block header_scripts
                                     if (!notes[newNote.x][newNote.y]){
                                         this.animate({r: smRadius}, 100,'elastic');
                                     }
-                                })};
-                    return newNote;
-                } 
-            r.canvas.onmousedown(function () {console.log("hello")});
+                                })
+                                .drag(function(dx,dy){
+                                        var pathArray = newNote.path.attr("path");
+                                        pathArray[1][1] = 40+horSpacing*newNote.y+dx;
+                                        //pathArray[1][2] = 40+vertSpacing*newNote.x+dy;
+                                        newNote.path.attr({path:pathArray});
+                                    },
+                                    function(){
+                                        newNote.path.show();
+                                        var new_op = +!newNote.circle.attr('fill-opacity');
+                                        notes[newNote.x][newNote.y] = new_op;                        
+                                        newNote.circle.animate({'fill-opacity' : new_op}, 200);
+                                    },
+                                    function(){
+                                        var pathArray = newNote.path.attr("path");
+                                        var glassesTraversed = Math.round((pathArray[1][1]-(40+horSpacing*newNote.y))/horSpacing);
+                                        console.log(glassesTraversed);
+                                        if(glassesTraversed > 0){
+                                            for(var i = newNote.y; i<newNote.y+glassesTraversed+1 && i<lenSong; i++){
+                                                glasses[newNote.x].glassNotes[i].highlight();
+                                            }
+                                        }
+                                        this.dx = this.dy = 0;
+                                    }),
+                            'highlight': (function(){
+                                notes[newNote.x][newNote.y] = 1;                        
+                                newNote.circle.animate({'fill-opacity' : 1}, 200);
+                                newNote.circle.animate({r: lgRadius}, 100,'elastic');
 
-            for (var i = numGlass; i--;) {
+                            })
+                        };
+                    return newNote;
+                }
+
+            for (var i = 0; i<numGlass; i++) {
                 glasses[i]=makeGlass(fills[i]);
 
-                for (var j = lenSong-1; j--;){
+                for (var j = 0; j<lenSong; j++){
                     r.rect(40+horSpacing*j+smRadius, 40+vertSpacing*i-smRadius/2, horSpacing-2*smRadius , smRectHeight)
                         .attr({fill: fills[i], stroke: fills[i], 'fill-opacity': pauses[i][j]})
                         .data('x', j)
@@ -98,7 +128,8 @@ block header_scripts
                             pauses[this.data('y')][this.data('x')] = new_op;                        
                             this.animate({'fill-opacity' : new_op}, 200);
                         })
-                        .hover(function() {
+                        .hide();
+                        /*.hover(function() {
                                 if (!pauses[this.data('y')][this.data('x')]){
                                     this.animate({y: this.attr('y')-2.5, height: lgRectHeight}, 1);
                                 }
@@ -107,9 +138,9 @@ block header_scripts
                                 if (!pauses[this.data('y')][this.data('x')]){
                                     this.animate({y: this.attr('y')+2.5, height: smRectHeight}, 1);
                                 }
-                            });
+                            });*/
                 }
-                for (var j = lenSong; j--;){
+                for (var j = 0; j<lenSong; j++){
                     glasses[i].addNote(makeNote(i,j));
                 }
             }
