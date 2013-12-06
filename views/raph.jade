@@ -51,121 +51,115 @@ block header_scripts
                 };
             var path = r.path("M0 0L0 0").hide();
             var makeNote = function (x,y) {
-                    var newNote = 
-                            {'x':x,
-                            'y':y,
-                            'state':0,
-                            'path':path = r.path("M"+(40+horSpacing*y)+" "+(40+vertSpacing*x)+"L"+(40+horSpacing*y)+" "+(40+vertSpacing*x))
-                                        .attr({'stroke-width':smRectHeight,
-                                        stroke:fills[x]})
-                                        .hide()
-                                        ,
-                            'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
-                                .attr({fill: fills[x], stroke: fills[x], 'stroke-width': 2, 'fill-opacity': notes[x][y], 'stroke-opacity': 1})
-                                .hover(function() {
-                                    this.animate({r: lgRadius}, 100,'elastic');
-                                },
-                                function() {
-                                    if (!notes[newNote.x][newNote.y]){
-                                        this.animate({r: smRadius}, 100,'elastic');
-                                    }
-                                })
-                                .drag(function(dx,dy){
-                                        this.animate({r: lgRadius}, 100,'elastic');
-                                        var pathArray = newNote.path.attr("path");
-                                        pathArray[1][1] = 40+horSpacing*newNote.y+dx;
-                                        //pathArray[1][2] = 40+vertSpacing*newNote.x+dy;
-                                        newNote.path.attr({path:pathArray});
-                                    },
-                                    function(){
-                                        newNote.path.show();                                                              
-                                        newNote.circle.animate({'fill-opacity' : 1}, 200);
-                                        
-                                    },
-                                    function(){
-                                        var pathArray = newNote.path.attr("path");
-                                        var glassesTraversed = Math.round((pathArray[1][1]-(40+horSpacing*newNote.y))/horSpacing);
-                                        pathArray[1][1] = 40+horSpacing*(newNote.y+glassesTraversed);
-                                        newNote.path.attr({path:pathArray});
-                                        console.log(glassesTraversed);
-                                        if(glassesTraversed < 0){
-                                            for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>=0; j--){
-                                                glasses[newNote.x].glassNotes[j].highlight();
-                                                if( j > newNote.y+glassesTraversed && j-1 >= 0){
-                                                    glasses[newNote.x].glassPause[j-1].highlight();
-                                                }
-                                            }
-                                        }else if(glassesTraversed>0){
-                                            for(var j = newNote.y; j<newNote.y+glassesTraversed+1 && j<lenSong; j++){
-                                                glasses[newNote.x].glassNotes[j].highlight();
-                                                if(j<newNote.y+glassesTraversed&&j<lenSong-1){
-                                                    glasses[newNote.x].glassPause[j].highlight();
-                                                }
-                                            }
-                                        }else{
-                                            var new_op = +!notes[newNote.x][newNote.y];
-                                            notes[newNote.x][newNote.y] = new_op; 
-                                            if(!new_op){
-                                                notes[newNote.x][newNote.y] = 0;                        
-                                                newNote.circle.animate({'fill-opacity' : 0}, 200);
-                                                if(newNote.y < lenSong-1)
-                                                    glasses[newNote.x].glassPause[newNote.y].unhighlight();
-                                                if(newNote.y-1 >= 0){
-                                                    glasses[newNote.x].glassPause[newNote.y-1].unhighlight();
-                                                }
-                                            }
-                                        }
-                                        pathArray[1][1] = 40+horSpacing*newNote.y;
-                                        newNote.path.attr({path:pathArray});
-                                        newNote.path.hide();
-
-                                        this.dx = this.dy = 0;
-                                    }),
-                            'highlight': (function(){
-                                notes[newNote.x][newNote.y] = 1;                        
-                                newNote.circle.animate({'fill-opacity' : 1}, 200);
-                                newNote.circle.animate({r: lgRadius}, 100,'elastic');
-
-                            })
-                        };
-                    return newNote;
-                }
-            var makePause = function (x,y){
-                var newPause = {'x':x,
-                        'y':y,
-                        'state':0,
-                        'rect':
-                        r.rect(40+horSpacing*y+smRadius, 40+vertSpacing*x-smRadius/2, horSpacing-2*smRadius , smRectHeight)
-                        .attr({fill: fills[x], stroke: fills[x], 'fill-opacity': pauses[x][y]})
-                        .click(function () {
-                            newPause.unhighlight();
+                var newNote = 
+                    {'x':x,
+                    'y':y,
+                    'state':0,
+                    'path':path = r.path("M"+(40+horSpacing*y)+" "+(40+vertSpacing*x)+"L"+(40+horSpacing*y)+" "+(40+vertSpacing*x))
+                        .attr({'stroke-width':smRectHeight, stroke:fills[x]})
+                        .hide()
+                        ,
+                    'circle':r.circle(40+horSpacing*y, 40+vertSpacing*x, smRadius)
+                        .attr({fill: fills[x], stroke: fills[x], 'stroke-width': 2, 'fill-opacity': notes[x][y], 'stroke-opacity': 1})
+                        .hover(function() {
+                            this.animate({r: lgRadius}, 100,'elastic');
+                        },
+                        function() {
+                            if (!notes[newNote.x][newNote.y]){
+                                this.animate({r: smRadius}, 100,'elastic');
+                            }
                         })
-                        .hide(),
-                        'highlight': (function(){
-                            pauses[newPause.x][newPause.y] = 1;
-                            newPause.rect.show();
-                            newPause.rect.animate({'fill-opacity' : 1}, 200);
-                            }),
-                        'unhighlight': (function(){
-                            pauses[newPause.x][newPause.y] = 0;
-                            newPause.rect.animate({'fill-opacity' : 0}, 200);
-                            newPause.rect.hide();
-                            
-                            }),
-                        /*.hover(function() {
-                                if (!pauses[this.data('y')][this.data('x')]){
-                                    this.transform('s1, 1.5');
-                                    //- this.animate({height: lgRectHeight}, 0);
+                        .drag(function(dx,dy){
+                            this.animate({r: lgRadius}, 100,'elastic');
+                            var pathArray = newNote.path.attr("path");
+                            pathArray[1][1] = 40+horSpacing*newNote.y+dx;
+                            //pathArray[1][2] = 40+vertSpacing*newNote.x+dy;
+                            newNote.path.attr({path:pathArray});
+                        }, function(){
+                            newNote.path.show();                                                              
+                            newNote.circle.animate({'fill-opacity' : 1}, 200);                                        
+                        }, function(){
+                            var pathArray = newNote.path.attr("path");
+                            var glassesTraversed = Math.round((pathArray[1][1]-(40+horSpacing*newNote.y))/horSpacing);
+                            pathArray[1][1] = 40+horSpacing*(newNote.y+glassesTraversed);
+                            newNote.path.attr({path:pathArray});
+                            console.log(glassesTraversed);
+                            if(glassesTraversed < 0){
+                                for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>=0; j--){
+                                    glasses[newNote.x].glassNotes[j].highlight();
+                                    if( j > newNote.y+glassesTraversed && j-1 >= 0){
+                                        glasses[newNote.x].glassPause[j-1].highlight();
+                                    }
                                 }
-                            },
-                            function() {
-                                if (!pauses[this.data('y')][this.data('x')]){
-                                    this.transform('s1, 1');
-                                    //- this.animate({height: smRectHeight}, 0);
+                            }else if(glassesTraversed>0){
+                                for(var j = newNote.y; j<newNote.y+glassesTraversed+1 && j<lenSong; j++){
+                                    glasses[newNote.x].glassNotes[j].highlight();
+                                    if(j<newNote.y+glassesTraversed&&j<lenSong-1){
+                                        glasses[newNote.x].glassPause[j].highlight();
+                                    }
                                 }
+                            }else{
+                                var new_op = +!notes[newNote.x][newNote.y];
+                                notes[newNote.x][newNote.y] = new_op; 
+                                if(!new_op){
+                                    notes[newNote.x][newNote.y] = 0;                        
+                                    newNote.circle.animate({'fill-opacity' : 0}, 200);
+                                    if(newNote.y < lenSong-1)
+                                        glasses[newNote.x].glassPause[newNote.y].unhighlight();
+                                    if(newNote.y-1 >= 0){
+                                        glasses[newNote.x].glassPause[newNote.y-1].unhighlight();
+                                    }
                                 }
-                            });*/
+                            }
+                            pathArray[1][1] = 40+horSpacing*newNote.y;
+                            newNote.path.attr({path:pathArray});
+                            newNote.path.hide();
+
+                            this.dx = this.dy = 0;
+                        }),
+                    'highlight': (function(){
+                        notes[newNote.x][newNote.y] = 1;                        
+                        newNote.circle.animate({'fill-opacity' : 1}, 200);
+                        newNote.circle.animate({r: lgRadius}, 100,'elastic');
+                    })
+                };
+                return newNote;
+            }
+            var makePause = function (x,y){
+                var newPause = 
+                    {'x':x,
+                    'y':y,
+                    'state':0,
+                    'rect':
+                    r.rect(40+horSpacing*y+smRadius, 40+vertSpacing*x-smRadius/2, horSpacing-2*smRadius , smRectHeight)
+                    .attr({fill: fills[x], stroke: fills[x], 'fill-opacity': pauses[x][y]})
+                    .click(function () {
+                        newPause.unhighlight();
+                    })
+                    .hide(),
+                    'highlight': (function(){
+                        pauses[newPause.x][newPause.y] = 1;
+                        newPause.rect.show();
+                        newPause.rect.animate({'fill-opacity' : 1}, 200);
+                    }),
+                    'unhighlight': (function(){
+                        pauses[newPause.x][newPause.y] = 0;
+                        newPause.rect.animate({'fill-opacity' : 0}, 200);
+                        newPause.rect.hide();
+                    })
+                    /*.hover(function() {
+                        if (!pauses[this.data('y')][this.data('x')]){
+                            this.transform('s1, 1.5');
+                            //- this.animate({height: lgRectHeight}, 0);
                         }
+                    },
+                    function() {
+                        if (!pauses[this.data('y')][this.data('x')]){
+                            this.transform('s1, 1');
+                            //- this.animate({height: smRectHeight}, 0);
+                        }
+                    });*/
+                };
                 return newPause;   
             }
             for (var i = 0; i<numGlass; i++) {
@@ -180,23 +174,22 @@ block header_scripts
             }
 
             // Submit button
-            var subRect =
-            r.rect(50, 500, 200, 60, 20)
-                .attr({fill: "#3C850C", stroke: "#326E0A", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1})
-                
-            var subText = 
-            r.text(150,530,"Submit Song!")
-                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica" })
-            var subButton = r.set()
-                .attr({cursor: "pointer"});
+            var subRect = r.rect(50, 500, 200, 60, 20)
+                .attr({fill: "#3C850C", stroke: "#326E0A", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
+            var subText = r.text(150,530,"Submit Song!")
+                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica" });
+            var subButton = r.set();
             subButton.push(subRect);
             subButton.push(subText);
+
             subButton.hover(function() {
+                this.attr({cursor: "pointer"});
                 subRect.animate({'fill-opacity' : 1}, 200);
                 },
                 function() {
+                this.attr({cursor: "default"});
                 subRect.animate({'fill-opacity' : .75}, 200);
-                })
+                });
             subButton.click(function() {
                 var n = "";
                 var p = "";
