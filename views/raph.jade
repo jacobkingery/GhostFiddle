@@ -44,7 +44,7 @@ block header_scripts
                         'color': color,
                         addNote: function (note) {this.glassNotes.push(note);},
                         addPause: function (pause) {this.glassPause.push(pause);
-                                                    console.log("pushed pause");
+                                                    //- console.log("pushed pause");
                                                     }
                         
                         };
@@ -83,7 +83,7 @@ block header_scripts
                             var glassesTraversed = Math.round((pathArray[1][1]-(40+horSpacing*newNote.y))/horSpacing);
                             pathArray[1][1] = 40+horSpacing*(newNote.y+glassesTraversed);
                             newNote.path.attr({path:pathArray});
-                            console.log(glassesTraversed);
+                            //- console.log(glassesTraversed);
                             if(glassesTraversed < 0){
                                 for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>=0; j--){
                                     glasses[newNote.x].glassNotes[j].highlight();
@@ -177,7 +177,7 @@ block header_scripts
             var subRect = r.rect(50, 500, 200, 60, 20)
                 .attr({fill: "#3C850C", stroke: "#326E0A", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
             var subText = r.text(150,530,"Submit Song!")
-                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica" });
+                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica, Arial, sans-serif" });
             var subButton = r.set();
             subButton.push(subRect);
             subButton.push(subText);
@@ -208,6 +208,7 @@ block header_scripts
 
 block content
 
+    h1 Ghost Fiddle
     div(id="raphHolder")
     div(id="formHolder")
         form(id="newSong", method="post", action="/submit")
