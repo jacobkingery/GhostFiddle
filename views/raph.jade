@@ -7,13 +7,13 @@ block header_scripts
 
         window.onload = function() {
             // Raphael canvas
-            var W = 1000,
+            var W = 1500,
                 H = 700,
                 r = Raphael("raphHolder", W, H);
 
             // Data storage    
-            var lenSong = 12,
-                numGlass = 6,
+            var lenSong = 24,
+                numGlass = 8,
                 notes = [],
                 pauses = [];
 
@@ -34,9 +34,10 @@ block header_scripts
                 lgRadius = 15,
                 smRectHeight = 10,
                 lgRectHeight = 15,
-                horSpacing = 80,
-                vertSpacing = 80,
-                fills = ['#87E8D6','#FAE13C','#E43CFA','#3CFA58','#F24B96','#593AB5'],
+                horSpacing = 60,
+                vertSpacing = 50,
+                noteNames = ['D', 'E', 'F#', 'G', 'A', 'B', 'C#', 'D'],
+                fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
                 glasses={};
             var makeGlass = function (color) {
                 return {'glassNotes': [],
@@ -163,6 +164,8 @@ block header_scripts
                 return newPause;   
             }
             for (var i = 0; i<numGlass; i++) {
+                r.text(12, 40+vertSpacing*i, noteNames[i])
+                    .attr({fill: "#888888", "font-size": 20, "font-family": "Helvetica, Arial, sans-serif" });
                 glasses[i]=makeGlass(fills[i]);
 
                 for (var j = 0; j<lenSong-1; j++){
