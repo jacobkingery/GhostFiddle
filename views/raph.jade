@@ -36,9 +36,11 @@ block header_scripts
                 lgRectHeight = 15,
                 horSpacing = 60,
                 vertSpacing = 50,
-                horOffset = 40,
+                horOffset = 80,
                 vertOffset = 40,
-                fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#593AB5','#E3710B','#EEEEEE'],
+                noteNames = ['D', 'E', 'F#', 'G', 'A', 'B', 'C#', 'D'],
+                fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
+                //fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#593AB5','#E3710B','#EEEEEE'],
                 glasses={};
             var makeGlass = function (color) {
                 return {'glassNotes': [],
@@ -165,6 +167,8 @@ block header_scripts
                 return newPause;   
             }
             for (var i = 0; i<numGlass; i++) {
+                r.text(24, 40+vertSpacing*i, noteNames[i])
+                    .attr({fill: fills[i], "font-size": 36, "font-family": "Helvetica, Arial, sans-serif" });
                 glasses[i]=makeGlass(fills[i]);
 
                 for (var j = 0; j<lenSong-1; j++){
