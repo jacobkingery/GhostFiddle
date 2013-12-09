@@ -38,9 +38,9 @@ block header_scripts
                 vertSpacing = 50,
                 horOffset = 80,
                 vertOffset = 40,
-                noteNames = ['D', 'E', 'F#', 'G', 'A', 'B', 'C#', 'D'],
-                fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
-                //fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#593AB5','#E3710B','#EEEEEE'],
+                noteNames = ['D', 'C#', 'B', 'A', 'G', 'F#', 'E', 'D'],
+                //fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
+                fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#493CFF','#E3710B','#EEEEEE'],
                 glasses={};
             var makeGlass = function (color) {
                 return {'glassNotes': [],
@@ -214,7 +214,7 @@ block header_scripts
 
 block content
 
-    h1 Ghost Fiddle
+    img(src="/images/smokeGhost.jpg")
     div(id="raphHolder")
     div(id="formHolder")
         form(id="newSong", method="post", action="/submit")
