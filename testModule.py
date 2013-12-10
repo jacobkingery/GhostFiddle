@@ -1,9 +1,7 @@
 import time
-c = "hello"
 def makeFile():
 	f = open('testText.txt','w')
 	f.write('Begin Test!\n')
-	f.write(c)
 	f.close()
 
 def writeSong(s):

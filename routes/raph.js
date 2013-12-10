@@ -32,7 +32,7 @@ exports.addSong = function() {
         var song = "";
         for (var i = 0; i < pauses.length; i++) {
             for (var j = 0; j < pauses[i].length; j++) {
-                song += notes[i][j] + pauses[i][j];
+                song += notes[i][j] + ',' + pauses[i][j];
             }
             song += notes[i][notes[i].length-1] + ';';
         }
