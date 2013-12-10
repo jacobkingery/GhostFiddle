@@ -1,0 +1,256 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/nodejs', '/usr/bin/npm', 'install', 'node-python' ]
+2 info using npm@1.2.18
+3 info using node@v0.10.15
+4 verbose read json /home/brendan/Code/GhostFiddle/package.json
+5 verbose read json /home/brendan/Code/GhostFiddle/node_modules/express/package.json
+6 verbose read json /home/brendan/Code/GhostFiddle/node_modules/jade/package.json
+7 verbose from cache /home/brendan/Code/GhostFiddle/package.json
+8 verbose readDependencies using package.json deps
+9 verbose cache add [ 'node-python', null ]
+10 verbose cache add name=undefined spec="node-python" args=["node-python",null]
+11 verbose parsed url { protocol: null,
+11 verbose parsed url   slashes: null,
+11 verbose parsed url   auth: null,
+11 verbose parsed url   host: null,
+11 verbose parsed url   port: null,
+11 verbose parsed url   hostname: null,
+11 verbose parsed url   hash: null,
+11 verbose parsed url   search: null,
+11 verbose parsed url   query: null,
+11 verbose parsed url   pathname: 'node-python',
+11 verbose parsed url   path: 'node-python',
+11 verbose parsed url   href: 'node-python' }
+12 silly lockFile d56db8ac-node-python node-python
+13 verbose lock node-python /home/brendan/.npm/d56db8ac-node-python.lock
+14 silly lockFile d56db8ac-node-python node-python
+15 silly lockFile d56db8ac-node-python node-python
+16 verbose addNamed [ 'node-python', '' ]
+17 verbose addNamed [ null, '*' ]
+18 silly lockFile 12d5b1aa-node-python node-python@
+19 verbose lock node-python@ /home/brendan/.npm/12d5b1aa-node-python.lock
+20 silly addNameRange { name: 'node-python', range: '*', hasData: false }
+21 verbose registry.get node-python not expired, no request
+22 silly addNameRange number 2 { name: 'node-python', range: '*', hasData: true }
+23 silly addNameRange versions [ 'node-python', [ '0.0.2', '0.0.3', '0.0.4' ] ]
+24 verbose addNamed [ 'node-python', '0.0.4' ]
+25 verbose addNamed [ '0.0.4', '0.0.4' ]
+26 silly lockFile 3c531df8-node-python-0-0-4 node-python@0.0.4
+27 verbose lock node-python@0.0.4 /home/brendan/.npm/3c531df8-node-python-0-0-4.lock
+28 verbose read json /home/brendan/.npm/node-python/0.0.4/package/package.json
+29 silly lockFile 3c531df8-node-python-0-0-4 node-python@0.0.4
+30 silly lockFile 3c531df8-node-python-0-0-4 node-python@0.0.4
+31 silly lockFile 12d5b1aa-node-python node-python@
+32 silly lockFile 12d5b1aa-node-python node-python@
+33 silly resolved [ { name: 'node-python',
+33 silly resolved     version: '0.0.4',
+33 silly resolved     description: 'Call python stuff from nodejs',
+33 silly resolved     main: 'index.js',
+33 silly resolved     repository:
+33 silly resolved      { type: 'git',
+33 silly resolved        url: 'git://github.com/JeanSebTr/node-python.git' },
+33 silly resolved     bugs: 'https://github.com/JeanSebTr/node-python/issues',
+33 silly resolved     keywords: [ 'python', 'bridge' ],
+33 silly resolved     author:
+33 silly resolved      { name: 'Jean-Sébastien Tremblay',
+33 silly resolved        email: 'jeansebtr@xpensia.com',
+33 silly resolved        url: 'http://blog.jeansebtr.com' },
+33 silly resolved     contributors: [ [Object] ],
+33 silly resolved     scripts: { test: 'node test/linker.js', install: 'node-gyp rebuild' },
+33 silly resolved     license: 'BSD',
+33 silly resolved     gypfile: true,
+33 silly resolved     readmeFilename: 'README.md',
+33 silly resolved     dependencies: { bindings: '~1.1.1' },
+33 silly resolved     readme: '# node-python binding \n\npython bridge for nodejs!\n\nHyper-beta, don\'t hesitate to try and report bugs!\n\n[![Build Status](https://travis-ci.org/JeanSebTr/node-python.png)](https://travis-ci.org/JeanSebTr/node-python)\n\n## Installation\n\n```npm install node-python```\n\n## Usage\n\n```javascript\n\n// python stuff\nvar python = require(\'node-python\');\nvar os = python.import(\'os\');\n\n// nodejs stuff\nvar path = require(\'path\');\n\nassert(os.path.basename(os.getcwd()) == path.basename(process.cwd()))\n\n```\n\nYou should now go have fun with that and make it brokes :)\n\n## Current status\n\nWhat should work:\n\n* Conversion between None and Undefined\n* Conversion between Python\'s and Node\'s Boolean\n* Conversion between Python\'s and Node\'s String\n* Calling python functions from node\n* Conversion from Python\'s Array to Node\'s Array\n\nWhat may be broken:\n\n* Losing precision from Python\'s 64 bits Integer to Node\'s Number\n* If you\'re using node v0.6.x (please upgrade) you\'ll have to manually compile with node-gyp\n\nWhat\'s to be done:\n\n* Conversion from Node\'s Array to Python\'s Array\n* Pass javascript object to python\n* Call javascript function from python\n\nWhat would be realy awesome:\n\n* Proper object introspection\n\n\n## History\n\n* **v0.0.4** : 2013-10-09\n  - use the bindings module to load the native extension\n* **v0.0.3** : 2013-07-06\n  - Refactor\n  - Better type conversion & error handling\n  - Compilation now properly working on both OSX and Linux. Windows compilation _may_ work too\n* **v0.0.2** : 2012-12-21\n  - Forked from [chrisdickinson/node-python](https://github.com/chrisdickinson/node-python)\n  - Compilation with node-gyp\n',
+33 silly resolved     _id: 'node-python@0.0.4',
+33 silly resolved     _from: 'node-python@' } ]
+34 info install node-python@0.0.4 into /home/brendan/Code/GhostFiddle
+35 info installOne node-python@0.0.4
+36 verbose from cache /home/brendan/.npm/node-python/0.0.4/package/package.json
+37 info /home/brendan/Code/GhostFiddle/node_modules/node-python unbuild
+38 verbose read json /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+39 verbose tar unpack /home/brendan/.npm/node-python/0.0.4/package.tgz
+40 silly lockFile ae706d98-tFiddle-node-modules-node-python /home/brendan/Code/GhostFiddle/node_modules/node-python
+41 verbose lock /home/brendan/Code/GhostFiddle/node_modules/node-python /home/brendan/.npm/ae706d98-tFiddle-node-modules-node-python.lock
+42 silly lockFile b1f8262e-pm-node-python-0-0-4-package-tgz /home/brendan/.npm/node-python/0.0.4/package.tgz
+43 verbose lock /home/brendan/.npm/node-python/0.0.4/package.tgz /home/brendan/.npm/b1f8262e-pm-node-python-0-0-4-package-tgz.lock
+44 silly gunzTarPerm modes [ '755', '644' ]
+45 silly gunzTarPerm extractEntry package.json
+46 silly gunzTarPerm extractEntry .npmignore
+47 silly gunzTarPerm extractEntry README.md
+48 silly gunzTarPerm extractEntry index.js
+49 silly gunzTarPerm extractEntry .travis.yml
+50 silly gunzTarPerm extractEntry LICENSE.bsd
+51 silly gunzTarPerm extractEntry binding.gyp
+52 silly gunzTarPerm extractEntry src/binding.cc
+53 silly gunzTarPerm extractEntry src/js_object_wrapper.h
+54 silly gunzTarPerm extractEntry src/py_object_wrapper.cc
+55 silly gunzTarPerm extractEntry src/py_object_wrapper.h
+56 silly gunzTarPerm extractEntry src/utils.cc
+57 silly gunzTarPerm extractEntry src/utils.h
+58 silly gunzTarPerm extractEntry test/linker.js
+59 verbose read json /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+60 silly lockFile ae706d98-tFiddle-node-modules-node-python /home/brendan/Code/GhostFiddle/node_modules/node-python
+61 silly lockFile ae706d98-tFiddle-node-modules-node-python /home/brendan/Code/GhostFiddle/node_modules/node-python
+62 silly lockFile b1f8262e-pm-node-python-0-0-4-package-tgz /home/brendan/.npm/node-python/0.0.4/package.tgz
+63 silly lockFile b1f8262e-pm-node-python-0-0-4-package-tgz /home/brendan/.npm/node-python/0.0.4/package.tgz
+64 info preinstall node-python@0.0.4
+65 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+66 verbose readDependencies using package.json deps
+67 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+68 verbose readDependencies using package.json deps
+69 verbose cache add [ 'bindings@~1.1.1', null ]
+70 verbose cache add name=undefined spec="bindings@~1.1.1" args=["bindings@~1.1.1",null]
+71 verbose parsed url { protocol: null,
+71 verbose parsed url   slashes: null,
+71 verbose parsed url   auth: null,
+71 verbose parsed url   host: null,
+71 verbose parsed url   port: null,
+71 verbose parsed url   hostname: null,
+71 verbose parsed url   hash: null,
+71 verbose parsed url   search: null,
+71 verbose parsed url   query: null,
+71 verbose parsed url   pathname: 'bindings@~1.1.1',
+71 verbose parsed url   path: 'bindings@~1.1.1',
+71 verbose parsed url   href: 'bindings@~1.1.1' }
+72 verbose cache add name="bindings" spec="~1.1.1" args=["bindings","~1.1.1"]
+73 verbose parsed url { protocol: null,
+73 verbose parsed url   slashes: null,
+73 verbose parsed url   auth: null,
+73 verbose parsed url   host: null,
+73 verbose parsed url   port: null,
+73 verbose parsed url   hostname: null,
+73 verbose parsed url   hash: null,
+73 verbose parsed url   search: null,
+73 verbose parsed url   query: null,
+73 verbose parsed url   pathname: '~1.1.1',
+73 verbose parsed url   path: '~1.1.1',
+73 verbose parsed url   href: '~1.1.1' }
+74 verbose addNamed [ 'bindings', '~1.1.1' ]
+75 verbose addNamed [ null, '>=1.1.1-0 <1.2.0-0' ]
+76 silly lockFile cc1512d6-bindings-1-1-1 bindings@~1.1.1
+77 verbose lock bindings@~1.1.1 /home/brendan/.npm/cc1512d6-bindings-1-1-1.lock
+78 silly addNameRange { name: 'bindings', range: '>=1.1.1-0 <1.2.0-0', hasData: false }
+79 verbose registry.get bindings not expired, no request
+80 silly addNameRange number 2 { name: 'bindings', range: '>=1.1.1-0 <1.2.0-0', hasData: true }
+81 silly addNameRange versions [ 'bindings',
+81 silly addNameRange   [ '0.0.1',
+81 silly addNameRange     '0.1.0',
+81 silly addNameRange     '0.1.1',
+81 silly addNameRange     '0.2.0',
+81 silly addNameRange     '0.2.1',
+81 silly addNameRange     '0.2.2',
+81 silly addNameRange     '0.2.3',
+81 silly addNameRange     '0.2.4',
+81 silly addNameRange     '0.3.0',
+81 silly addNameRange     '0.4.0',
+81 silly addNameRange     '1.0.0',
+81 silly addNameRange     '1.1.0',
+81 silly addNameRange     '1.1.1' ] ]
+82 verbose addNamed [ 'bindings', '1.1.1' ]
+83 verbose addNamed [ '1.1.1', '1.1.1' ]
+84 silly lockFile 52dd60a7-bindings-1-1-1 bindings@1.1.1
+85 verbose lock bindings@1.1.1 /home/brendan/.npm/52dd60a7-bindings-1-1-1.lock
+86 verbose read json /home/brendan/.npm/bindings/1.1.1/package/package.json
+87 silly lockFile 52dd60a7-bindings-1-1-1 bindings@1.1.1
+88 silly lockFile 52dd60a7-bindings-1-1-1 bindings@1.1.1
+89 silly lockFile cc1512d6-bindings-1-1-1 bindings@~1.1.1
+90 silly lockFile cc1512d6-bindings-1-1-1 bindings@~1.1.1
+91 silly resolved [ { name: 'bindings',
+91 silly resolved     description: 'Helper module for loading your native module\'s .node file',
+91 silly resolved     keywords: [ 'native', 'addon', 'bindings', 'gyp', 'waf', 'c', 'c++' ],
+91 silly resolved     version: '1.1.1',
+91 silly resolved     author:
+91 silly resolved      { name: 'Nathan Rajlich',
+91 silly resolved        email: 'nathan@tootallnate.net',
+91 silly resolved        url: 'http://tootallnate.net' },
+91 silly resolved     repository:
+91 silly resolved      { type: 'git',
+91 silly resolved        url: 'git://github.com/TooTallNate/node-bindings.git' },
+91 silly resolved     main: './bindings.js',
+91 silly resolved     readme: 'node-bindings\n=============\n### Helper module for loading your native module\'s .node file\n\nThis is a helper module for authors of Node.js native addon modules.\nIt is basically the "swiss army knife" of `require()`ing your native module\'s\n`.node` file.\n\nThroughout the course of Node\'s native addon history, addons have ended up being\ncompiled in a variety of different places, depending on which build tool and which\nversion of node was used. To make matters worse, now the _gyp_ build tool can\nproduce either a _Release_ or _Debug_ build, each being built into different\nlocations.\n\nThis module checks _all_ the possible locations that a native addon would be built\nat, and returns the first one that loads successfully.\n\n\nInstallation\n------------\n\nInstall with `npm`:\n\n``` bash\n$ npm install bindings\n```\n\nOr add it to the `"dependencies"` section of your _package.json_ file.\n\n\nExample\n-------\n\n`require()`ing the proper bindings file for the current node version, platform\nand architecture is as simple as:\n\n``` js\nvar bindings = require(\'bindings\')(\'binding.node\')\n\n// Use your bindings defined in your C files\nbindings.your_c_function()\n```\n\n\nNice Error Output\n-----------------\n\nWhen the `.node` file could not be loaded, `node-bindings` throws an Error with\na nice error message telling you exactly what was tried. You can also check the\n`err.tries` Array property.\n\n```\nError: Could not load the bindings file. Tried:\n → /Users/nrajlich/ref/build/binding.node\n → /Users/nrajlich/ref/build/Debug/binding.node\n → /Users/nrajlich/ref/build/Release/binding.node\n → /Users/nrajlich/ref/out/Debug/binding.node\n → /Users/nrajlich/ref/Debug/binding.node\n → /Users/nrajlich/ref/out/Release/binding.node\n → /Users/nrajlich/ref/Release/binding.node\n → /Users/nrajlich/ref/build/default/binding.node\n → /Users/nrajlich/ref/compiled/0.8.2/darwin/x64/binding.node\n    at bindings (/Users/nrajlich/ref/node_modules/bindings/bindings.js:84:13)\n    at Object.<anonymous> (/Users/nrajlich/ref/lib/ref.js:5:47)\n    at Module._compile (module.js:449:26)\n    at Object.Module._extensions..js (module.js:467:10)\n    at Module.load (module.js:356:32)\n    at Function.Module._load (module.js:312:12)\n    ...\n```\n\n\nLicense\n-------\n\n(The MIT License)\n\nCopyright (c) 2012 Nathan Rajlich &lt;nathan@tootallnate.net&gt;\n\nPermission is hereby granted, free of charge, to any person obtaining\na copy of this software and associated documentation files (the\n\'Software\'), to deal in the Software without restriction, including\nwithout limitation the rights to use, copy, modify, merge, publish,\ndistribute, sublicense, and/or sell copies of the Software, and to\npermit persons to whom the Software is furnished to do so, subject to\nthe following conditions:\n\nThe above copyright notice and this permission notice shall be\nincluded in all copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \'AS IS\', WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.\nIN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY\nCLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,\nTORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE\nSOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n',
+91 silly resolved     readmeFilename: 'README.md',
+91 silly resolved     _id: 'bindings@1.1.1',
+91 silly resolved     _from: 'bindings@~1.1.1' } ]
+92 info install bindings@1.1.1 into /home/brendan/Code/GhostFiddle/node_modules/node-python
+93 info installOne bindings@1.1.1
+94 verbose from cache /home/brendan/.npm/bindings/1.1.1/package/package.json
+95 info /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings unbuild
+96 verbose read json /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings/package.json
+97 verbose tar unpack /home/brendan/.npm/bindings/1.1.1/package.tgz
+98 silly lockFile 1aaa0e1b-ode-python-node-modules-bindings /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings
+99 verbose lock /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings /home/brendan/.npm/1aaa0e1b-ode-python-node-modules-bindings.lock
+100 silly lockFile 7e4d97dc-n-npm-bindings-1-1-1-package-tgz /home/brendan/.npm/bindings/1.1.1/package.tgz
+101 verbose lock /home/brendan/.npm/bindings/1.1.1/package.tgz /home/brendan/.npm/7e4d97dc-n-npm-bindings-1-1-1-package-tgz.lock
+102 silly gunzTarPerm modes [ '755', '644' ]
+103 silly gunzTarPerm extractEntry package.json
+104 silly gunzTarPerm extractEntry README.md
+105 silly gunzTarPerm extractEntry bindings.js
+106 verbose read json /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings/package.json
+107 silly lockFile 1aaa0e1b-ode-python-node-modules-bindings /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings
+108 silly lockFile 1aaa0e1b-ode-python-node-modules-bindings /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings
+109 silly lockFile 7e4d97dc-n-npm-bindings-1-1-1-package-tgz /home/brendan/.npm/bindings/1.1.1/package.tgz
+110 silly lockFile 7e4d97dc-n-npm-bindings-1-1-1-package-tgz /home/brendan/.npm/bindings/1.1.1/package.tgz
+111 info preinstall bindings@1.1.1
+112 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings/package.json
+113 verbose readDependencies using package.json deps
+114 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings/package.json
+115 verbose readDependencies using package.json deps
+116 silly resolved []
+117 verbose about to build /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings
+118 info build /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings
+119 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules/bindings/package.json
+120 verbose linkStuff [ false,
+120 verbose linkStuff   false,
+120 verbose linkStuff   false,
+120 verbose linkStuff   '/home/brendan/Code/GhostFiddle/node_modules/node-python/node_modules' ]
+121 info linkStuff bindings@1.1.1
+122 verbose linkBins bindings@1.1.1
+123 verbose linkMans bindings@1.1.1
+124 verbose rebuildBundles bindings@1.1.1
+125 info install bindings@1.1.1
+126 info postinstall bindings@1.1.1
+127 verbose about to build /home/brendan/Code/GhostFiddle/node_modules/node-python
+128 info build /home/brendan/Code/GhostFiddle/node_modules/node-python
+129 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+130 verbose linkStuff [ false,
+130 verbose linkStuff   false,
+130 verbose linkStuff   false,
+130 verbose linkStuff   '/home/brendan/Code/GhostFiddle/node_modules' ]
+131 info linkStuff node-python@0.0.4
+132 verbose linkBins node-python@0.0.4
+133 verbose linkMans node-python@0.0.4
+134 verbose rebuildBundles node-python@0.0.4
+135 verbose rebuildBundles [ 'bindings' ]
+136 info install node-python@0.0.4
+137 verbose unsafe-perm in lifecycle false
+138 verbose set uid from=0 to=1000
+139 silly exec sh "-c" "node-gyp rebuild"
+140 silly sh,-c,node-gyp rebuild,/home/brendan/Code/GhostFiddle/node_modules/node-python spawning
+141 info node-python@0.0.4 Failed to exec install script
+142 info /home/brendan/Code/GhostFiddle/node_modules/node-python unbuild
+143 verbose from cache /home/brendan/Code/GhostFiddle/node_modules/node-python/package.json
+144 warn This failure might be due to the use of legacy binary "node"
+145 warn For further explanations, please read
+/usr/share/doc/nodejs/README.Debian
+146 info preuninstall node-python@0.0.4
+147 info uninstall node-python@0.0.4
+148 verbose true,/home/brendan/Code/GhostFiddle/node_modules,/home/brendan/Code/GhostFiddle/node_modules unbuild node-python@0.0.4
+149 info postuninstall node-python@0.0.4
+150 error node-python@0.0.4 install: `node-gyp rebuild`
+150 error `sh "-c" "node-gyp rebuild"` failed with 1
+151 error Failed at the node-python@0.0.4 install script.
+151 error This is most likely a problem with the node-python package,
+151 error not with npm itself.
+151 error Tell the author that this fails on your system:
+151 error     node-gyp rebuild
+151 error You can get their info via:
+151 error     npm owner ls node-python
+151 error There is likely additional logging output above.
+152 error System Linux 3.11.0-12-generic
+153 error command "/usr/bin/nodejs" "/usr/bin/npm" "install" "node-python"
+154 error cwd /home/brendan/Code/GhostFiddle
+155 error node -v v0.10.15
+156 error npm -v 1.2.18
+157 error code ELIFECYCLE
+158 verbose exit [ 1, true ]
