@@ -18,5 +18,4 @@ var runTests = function() {
      console.log('test 3 ok!');
    });
 };
-
 runTests();

@@ -12,6 +12,7 @@ child.on('exit', handleExit);
 function handleStdout(data) {
   var datastr = data.toString('utf8');
   var finished = false;
+  console.log(datastr)
   if (datastr.match(/Command Start\n/)) {
     datastr = datastr.replace(/Command Start\n/,'');
   } 
@@ -36,6 +37,9 @@ function handleStdout(data) {
 
 function handleStderr(data) {
   console.log(data.toString('utf8'))
+  if (cmdQueue.length > 0) {
+    cmdQueue[0].callback(data,null);
+  } 
   processQueue();
 };
 

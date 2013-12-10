@@ -1,4 +1,13 @@
-var fs = require('fs');
+var python = require('../python.js').shell;
+var callback = function(err, data) {
+   if (err) {
+     console.error(err);
+   } else {
+     process.stdout.write(data.toString('utf8') + 'Finished python line\n');
+   }
+};
+python('import testModule', callback);
+python('testModule.makeFile()', callback);
 
 exports.line = function(req, res) {
     res.render('raph', {title: 'Raphael Line Test'});
@@ -25,19 +34,12 @@ exports.addSong = function() {
             for (var j = 0; j < pauses[i].length; j++) {
                 song += notes[i][j] + pauses[i][j];
             }
-            song += notes[i][notes[i].length-1] + '\n';
+            song += notes[i][notes[i].length-1] + ';';
         }
-
-        fs.writeFile("./data/song0.txt", song, function(err) {
-            if(err) {
-                console.log(err);
-                res.location('failure');
-                res.redirect('failure');
-            } else {
-                console.log("The file was saved!");
-                res.location('success');
-                res.redirect('success');
-            }
-        });
+        var command = 'testModule.writeSong("'+song+'")';
+        python(command,callback);
+        res.location('success');
+        res.redirect('success');
+    
     }
 };
