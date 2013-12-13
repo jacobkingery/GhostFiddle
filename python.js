@@ -43,19 +43,17 @@ function handleStderr(data) {
   processQueue();
 };
 
+function handleExit(code) {
+  console.log('child process exited with code ' + code);
+  process.exit();
+};
+
 function processQueue() {
   if (cmdQueue.length > 0 && cmdQueue[0].state === 'pending') {
     cmdQueue[0].state = 'processing';
     child.stdin.write(cmdQueue[0].command, encoding='utf8');
   }
 };
-
-
-function handleExit(code) {
-  console.log('child process exited with code ' + code);
-  process.exit();
-};
-
 
 this.shell = function (command, callback) {
   command = 'print "Command Start"; ' + command + '\nprint "Command End"';

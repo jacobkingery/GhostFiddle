@@ -2,3 +2,4 @@ node_modules
 *.save
 data
 *.pyc
+*.log

@@ -1,13 +1,12 @@
 var python = require('../python.js').shell;
 var callback = function(err, data) {
-   if (err) {
-     console.error(err);
-   } else {
-     process.stdout.write(data.toString('utf8') + 'Finished python line\n');
-   }
+    if (err) {
+        console.error(err);
+    } else {
+        //console.log(data.toString('utf8') + 'Finished python line\n');
+    }
 };
-python('import testModule', callback);
-python('testModule.makeFile()', callback);
+python('from subProcessedDriver import playSong', callback);
 
 exports.line = function(req, res) {
     res.render('raph', {title: 'Raphael Line Test'});
@@ -32,12 +31,13 @@ exports.addSong = function() {
         var song = "";
         for (var i = 0; i < pauses.length; i++) {
             for (var j = 0; j < pauses[i].length; j++) {
-                song += notes[i][j] + ',' + pauses[i][j];
+                song += notes[i][j] + pauses[i][j];
             }
             song += notes[i][notes[i].length-1] + ';';
         }
-        var command = 'testModule.writeSong("'+song+'")';
+        var command = 'playSong("'+song+'")';
         python(command,callback);
+        
         res.location('success');
         res.redirect('success');
     
