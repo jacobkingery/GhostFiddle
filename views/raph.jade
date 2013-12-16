@@ -7,11 +7,6 @@ block header_scripts
     script.
 
         window.onload = function() {
-            // Raphael canvas
-            var W = 3000,
-                H = 700,
-                r = Raphael("raphHolder", W, H);
-
             // Data storage    
             var lenSong = 8,
                 numGlass = 8,
@@ -29,20 +24,27 @@ block header_scripts
                 }
             }
 
-
             // Note selectors
             var smRadius = 10,
                 lgRadius = 15,
-                smRectHeight = 10,
-                lgRectHeight = 15,
-                horSpacing = 60,
+                rectHeight = 10,
+                horSpacing = 58,
                 vertSpacing = 50,
                 horOffset = 80,
-                vertOffset = 40,
+                vertOffset = 20,
                 noteNames = ['D', 'C#', 'B', 'A', 'G', 'F#', 'E', 'D'],
                 //fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
                 fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#493CFF','#E3710B','#EEEEEE'],
                 glasses={};
+
+            // Raphael canvas
+            var W = lenSong*horSpacing + horOffset,
+                H = numGlass*vertSpacing + vertOffset + 100,
+                //- W = 1460,
+                //- H = 490,
+                r = Raphael("raphHolder", W, H);
+
+            // Creating glasses and notes
             var makeGlass = function (color) {
                 return {'glassNotes': [],
                         'glassPause': [],
@@ -51,9 +53,8 @@ block header_scripts
                         addPause: function (pause) {this.glassPause.push(pause);},
                         removeNote:function(){this.glassNotes.pop().circle.hide();},
                         removePause:function(){this.glassPause.pop().rect.hide();}
-                        
-                        };
-                };
+                };                     
+            }
             var path = r.path("M0 0L0 0").hide();
             var makeNote = function (x,y) {
                 var newNote = 
@@ -61,27 +62,28 @@ block header_scripts
                     'y':y,
                     'state':0,
                     'path':path = r.path("M"+(horOffset+horSpacing*y)+" "+(vertOffset+vertSpacing*x)+"L"+(horOffset+horSpacing*y)+" "+(vertOffset+vertSpacing*x))
-                        .attr({'stroke-width':smRectHeight, stroke:fills[x]})
+                        .attr({'stroke-width':rectHeight, stroke:fills[x]})
                         .hide()
                         ,
                     'circle':r.circle(horOffset+horSpacing*y, vertOffset+vertSpacing*x, smRadius)
                         .attr({fill: fills[x], stroke: fills[x], 'stroke-width': 2, 'fill-opacity': notes[x][y], 'stroke-opacity': 1})
                         .hover(function() {
-                            this.animate({r: lgRadius}, 100,'elastic');
+                            this.animate({r: lgRadius}, 100);
                         },
                         function() {
                             if (!notes[newNote.x][newNote.y]){
-                                this.animate({r: smRadius}, 100,'elastic');
+                                this.animate({r: smRadius}, 100);
                             }
                         })
                         .drag(function(dx,dy){
-                            this.animate({r: lgRadius}, 100,'elastic');
+                            this.animate({r: lgRadius}, 100);
                             var pathArray = newNote.path.attr("path");
                             pathArray[1][1] = horOffset+horSpacing*newNote.y+dx;
                             if(horSpacing*newNote.y+dx > horSpacing*lenSong){
                                 changeSongLength(Math.round((horSpacing*newNote.y+dx)/horSpacing)+1);
                             }
                             //pathArray[1][2] = vertOffset+vertSpacing*newNote.x+dy;
+
                             newNote.path.attr({path:pathArray});
                         }, function(){
                             newNote.path.show();                                                              
@@ -91,7 +93,6 @@ block header_scripts
                             var glassesTraversed = Math.round((pathArray[1][1]-(horOffset+horSpacing*newNote.y))/horSpacing);
                             pathArray[1][1] = horOffset+horSpacing*(newNote.y+glassesTraversed);
                             newNote.path.attr({path:pathArray});
-                            //- console.log(glassesTraversed);
                             if(glassesTraversed < 0){
                                 for(var j = newNote.y; j>newNote.y+glassesTraversed-1 && j>=0; j--){
                                     glasses[newNote.x].glassNotes[j].highlight();
@@ -128,7 +129,11 @@ block header_scripts
                     'highlight': (function(){
                         notes[newNote.x][newNote.y] = 1;                        
                         newNote.circle.animate({'fill-opacity' : 1}, 200);
-                        newNote.circle.animate({r: lgRadius}, 100,'elastic');
+                        newNote.circle.animate({r: lgRadius}, 100);
+                    }),
+                    'unhighlight': (function(){
+                        notes[newNote.x][newNote.y] = 0;                        
+                        newNote.circle.attr({'fill-opacity' : 0, r: smRadius});
                     })
                 };
                 return newNote;
@@ -139,7 +144,7 @@ block header_scripts
                     'y':y,
                     'state':0,
                     'rect':
-                    r.rect(horOffset+horSpacing*y+smRadius, vertOffset+vertSpacing*x-smRadius/2, horSpacing-2*smRadius , smRectHeight)
+                    r.rect(horOffset+horSpacing*y+smRadius, vertOffset+vertSpacing*x-smRadius/2, horSpacing-2*smRadius , rectHeight)
                     .attr({fill: fills[x], stroke: fills[x], 'fill-opacity': pauses[x][y]})
                     .click(function () {
                         newPause.unhighlight();
@@ -152,14 +157,14 @@ block header_scripts
                     }),
                     'unhighlight': (function(){
                         pauses[newPause.x][newPause.y] = 0;
-                        newPause.rect.animate({'fill-opacity' : 0}, 200);
+                        newPause.rect.attr({'fill-opacity' : 0});
                         newPause.rect.hide();
                     })
                 };
                 return newPause;   
             }
             for (var i = 0; i<numGlass; i++) {
-                r.text(24, 40+vertSpacing*i, noteNames[i])
+                r.text(24, vertOffset+vertSpacing*i, noteNames[i])
                     .attr({fill: fills[i], "font-size": 36, "font-family": "Helvetica, Arial, sans-serif" });
                 glasses[i]=makeGlass(fills[i]);
 
@@ -204,6 +209,7 @@ block header_scripts
                         lenUpRect.attr({'x':horOffset+lenSong*horSpacing});                  
                     }
             };
+
             //Change Song Length Button
             var lenUpRect = r.rect(horOffset+lenSong*horSpacing, 150, 50, 50, 10)
                 .attr({fill:"#005500"})
@@ -261,10 +267,27 @@ block header_scripts
                 return c_value;
             }
 
+            // Reset function
+            var resetAll = function() {
+                for (var i = 0; i < numGlass; i++){
+                    for (var j = 0; j < lenSong; j++){
+                        glasses[i].glassNotes[j].unhighlight();
+                        if (j < lenSong - 1) {glasses[i].glassPause[j].unhighlight();}
+                    }
+                }
+            }
+
             // Submit button
-            var subRect = r.rect(50, 500, 200, 60, 20)
-                .attr({fill: "#3C850C", stroke: "#326E0A", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
-            var subText = r.text(150,530,"Submit Song!")
+            var subBtnVertOffset = vertOffset + numGlass*vertSpacing,
+                subBtnHorOffset = 50,
+                subBtnWidth = 210,
+                subBtnHeight = 60,
+                subBtnRadius = 20;
+
+            var subRect = r.rect(subBtnHorOffset, subBtnVertOffset, subBtnWidth, subBtnHeight, subBtnRadius)
+                .attr({fill: "#3C850C", stroke: "#326E09", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
+
+            var subText = r.text(subBtnHorOffset + subBtnWidth/2, subBtnVertOffset + subBtnHeight/2, "Submit Song!")
                 .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica, Arial, sans-serif" });
             var subButton = r.set();
             subButton.push(subRect);
@@ -278,17 +301,122 @@ block header_scripts
                 this.attr({cursor: "default"});
                 subRect.animate({'fill-opacity' : .75}, 200);
                 });
+
             subButton.click(function() {
                 var n = "";
                 var p = "";
-                for (var i = 0; i < numGlass; i++){
-                    n += notes[i].join('')+"\n";
-                    p += pauses[i].join('')+"\n";
+                var firstNote = 0;
+                var lastNote = 0;
+
+                for (var j = 0; j < lenSong; j++){
+                    for (var i = 0; i < numGlass; i++){
+                        if (notes[i][j] && !firstNote) {firstNote = j};
+                        if (notes[i][j]) {lastNote = j};
+                    }
                 }
 
+                for (var i = 0; i < numGlass; i++){
+                    n += notes[i].join('').slice(firstNote, lastNote+1)+"\n";
+                    p += pauses[i].join('').slice(firstNote, lastNote)+"\n";                
+                }
+                
                 document.getElementById('notes').value = n;
                 document.getElementById('pauses').value = p;
                 document.getElementById('newSong').submit();
+            });
+
+            // Reset button
+            var resBtnVertOffset = subBtnVertOffset,
+                resBtnHorOffset = subBtnHorOffset + subBtnWidth + horSpacing
+                resBtnWidth = 100,
+                resBtnHeight = 60,
+                resBtnRadius = 20;
+
+            var resRect = r.rect(resBtnHorOffset, resBtnVertOffset, resBtnWidth, resBtnHeight, resBtnRadius)
+                .attr({fill: "#FF0000", stroke: "#FA0000", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
+            var resText = r.text(resBtnHorOffset + resBtnWidth/2, resBtnVertOffset + resBtnHeight/2, "Reset")
+                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica, Arial, sans-serif" });
+            var resButton = r.set();
+            resButton.push(resRect);
+            resButton.push(resText);
+
+            resButton.hover(function() {
+                this.attr({cursor: "pointer"});
+                resRect.animate({'fill-opacity' : 1}, 200);
+                },
+                function() {
+                this.attr({cursor: "default"});
+                resRect.animate({'fill-opacity' : .75}, 200);
+                });
+
+            resButton.click(function() {resetAll()});
+
+            // Preset button
+            var preBtnVertOffset = subBtnVertOffset,
+                preBtnHorOffset = subBtnHorOffset + subBtnWidth + resBtnWidth + 2*horSpacing
+                preBtnWidth = 240,
+                preBtnHeight = subBtnHeight,
+                preBtnRadius = subBtnRadius;
+
+            var preRect = r.rect(preBtnHorOffset, preBtnVertOffset, preBtnWidth, preBtnHeight, preBtnRadius)
+                .attr({fill: "#0000FF", stroke: "#0000FA", 'stroke-width': 2, 'fill-opacity': .75, 'stroke-opacity': 1});                
+            var preText = r.text(preBtnHorOffset + preBtnWidth/2, preBtnVertOffset + preBtnHeight/2, "Random Preset")
+                .attr({fill: "#FFFFFF", "font-size": 32, "font-family": "Helvetica, Arial, sans-serif" });
+            var preButton = r.set();
+            preButton.push(preRect);
+            preButton.push(preText);
+
+            preButton.hover(function() {
+                this.attr({cursor: "pointer"});
+                preRect.animate({'fill-opacity' : 1}, 200);
+                },
+                function() {
+                this.attr({cursor: "default"});
+                preRect.animate({'fill-opacity' : .75}, 200);
+                });
+            
+            preButton.click(function() {
+                var presets = [["0000000000000010001000100000000000000",
+                    "0000000000001000100010001000000000000",
+                    "0000000000100010001000100010000000000",
+                    "0000000010001000100010001000100000000",
+                    "0000001000100010000000100010001000000",
+                    "0000100010001000000000001000100010000",
+                    "0010001000100000000000000010001000100",
+                    "1000100010000000000000000000111111111"], 
+                    ["00000011111;",
+                    "00000000000;",
+                    "00000000000;",
+                    "00001111111;",
+                    "00000000000;",
+                    "00111111111;",
+                    "00000000000;",
+                    "11111111111;"], 
+                    ["00000000000000000000000000000000000000000000000;",
+                    "11100000000011100000000011100000000000000000000;",
+                    "00001110000000001110000000000000000000000000000;",
+                    "00000000000000000000000000000000000000000000000;",
+                    "00000000111000000000111000000000000000000000000;",
+                    "00000000000000000000000000001000111111111111111;",
+                    "00000000000000000000000000000010000000000000000;",
+                    "00000000000000000000000000000000000000000000000;"]];
+
+                resetAll();
+                var randInt = Math.floor(Math.random() * presets.length);
+                var preset = presets[randInt];
+                for (i=0; i<preset.length; i++) {
+                    var realJ = 0;
+                    for (j=0; j<preset[i].length; j+=2) {
+                        noteij = +preset[i][j];
+                        if (noteij) {glasses[i].glassNotes[realJ].highlight();}
+                        if (j < preset[i].length-1) {
+                            pauseij = +preset[i][j+1];
+                            if (pauseij) {glasses[i].glassPause[realJ].highlight();}
+                        }
+                        realJ += 1;
+                    }
+                }
+                
             });
 
         };
@@ -296,7 +424,7 @@ block header_scripts
 
 block content
 
-    img(src="/images/smokeGhost.jpg")
+    img(src="/images/smokeGhost.jpg", id="logo")
     div(id="raphHolder")
     div(id="formHolder")
         form(id="newSong", method="post", action="/submit")

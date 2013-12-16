@@ -20,6 +20,10 @@ a {
     width: 1000px;
 }*/
 
+#logo {
+  height: 200px;
+}
+
 #footer {
     position: absolute;
     left: 15px;
