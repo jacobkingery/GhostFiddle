@@ -1,3 +1,4 @@
+var fs = require('fs');
 var python = require('../python.js').shell;
 var callback = function(err, data) {
     if (err) {
@@ -79,3 +80,5 @@ exports.addPreset = function() {
                 });
             }
         });
+    }
+}
