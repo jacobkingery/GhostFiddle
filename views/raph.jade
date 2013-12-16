@@ -2,17 +2,18 @@ extends layout
 
 block header_scripts
     script(src='/javascripts/raphael.js')
+    
 
     script.
 
         window.onload = function() {
             // Raphael canvas
-            var W = 1500,
+            var W = 3000,
                 H = 700,
                 r = Raphael("raphHolder", W, H);
 
             // Data storage    
-            var lenSong = 24,
+            var lenSong = 8,
                 numGlass = 8,
                 notes = [],
                 pauses = [];
@@ -47,9 +48,9 @@ block header_scripts
                         'glassPause': [],
                         'color': color,
                         addNote: function (note) {this.glassNotes.push(note);},
-                        addPause: function (pause) {this.glassPause.push(pause);
-                                                    //- console.log("pushed pause");
-                                                    }
+                        addPause: function (pause) {this.glassPause.push(pause);},
+                        removeNote:function(){this.glassNotes.pop().circle.hide();},
+                        removePause:function(){this.glassPause.pop().rect.hide();}
                         
                         };
                 };
@@ -77,6 +78,9 @@ block header_scripts
                             this.animate({r: lgRadius}, 100,'elastic');
                             var pathArray = newNote.path.attr("path");
                             pathArray[1][1] = horOffset+horSpacing*newNote.y+dx;
+                            if(horSpacing*newNote.y+dx > horSpacing*lenSong){
+                                changeSongLength(Math.round((horSpacing*newNote.y+dx)/horSpacing)+1);
+                            }
                             //pathArray[1][2] = vertOffset+vertSpacing*newNote.x+dy;
                             newNote.path.attr({path:pathArray});
                         }, function(){
@@ -151,18 +155,6 @@ block header_scripts
                         newPause.rect.animate({'fill-opacity' : 0}, 200);
                         newPause.rect.hide();
                     })
-                    /*.hover(function() {
-                        if (!pauses[this.data('y')][this.data('x')]){
-                            this.transform('s1, 1.5');
-                            //- this.animate({height: lgRectHeight}, 0);
-                        }
-                    },
-                    function() {
-                        if (!pauses[this.data('y')][this.data('x')]){
-                            this.transform('s1, 1');
-                            //- this.animate({height: smRectHeight}, 0);
-                        }
-                    });*/
                 };
                 return newPause;   
             }
@@ -177,6 +169,96 @@ block header_scripts
                 for (var j = 0; j<lenSong; j++){
                     glasses[i].addNote(makeNote(i,j));
                 }
+            }
+            
+            //Changes the number of notes displayed
+            var changeSongLength = function(newLenSong){
+                    if (newLenSong > lenSong){
+                        if(newLenSong>50){newLenSong = 50;}
+                        for(var j = lenSong; j < newLenSong; j++){
+                            for(var i = 0; i <numGlass; i++){
+                                notes[i].push(0);
+                                pauses[i].push(0);
+                                glasses[i].addNote(makeNote(i,j));
+                                glasses[i].addPause(makePause(i,j-1));
+                            }
+                        }
+                        lenSong = newLenSong;
+                        r.setSize(8*horOffset+lenSong*horSpacing,H);
+                        lenDownRect.attr({'x':horOffset+lenSong*horSpacing});  
+                        lenUpRect.attr({'x':horOffset+lenSong*horSpacing});   
+                    }
+                    else if(newLenSong < lenSong){
+                        if(newLenSong<1){newLenSong = 1;}
+                        for(var j = lenSong; j >newLenSong; j--){
+                            for(var i = 0; i <numGlass; i++){
+                                glasses[i].removeNote();
+                                glasses[i].removePause();
+                                notes[i].pop();
+                                pauses[i].pop();
+                            }
+                        }
+                        lenSong = newLenSong;
+                        r.setSize(8*horOffset+lenSong*horSpacing,H);
+                        lenDownRect.attr({'x':horOffset+lenSong*horSpacing});  
+                        lenUpRect.attr({'x':horOffset+lenSong*horSpacing});                  
+                    }
+            };
+            //Change Song Length Button
+            var lenUpRect = r.rect(horOffset+lenSong*horSpacing, 150, 50, 50, 10)
+                .attr({fill:"#005500"})
+                .click(function(){changeSongLength(lenSong+8);
+                    });
+            var lenDownRect = r.rect(horOffset+lenSong*horSpacing, 240, 50, 50, 10)
+                .attr({fill:"#550000"})
+                .click(function(){changeSongLength(lenSong-8);
+                    });
+
+            //Save Load Cookies
+            var saveSong = r.rect(300,500,100,50,10)
+                    .attr({fill:"#000055"})
+                    .click(function(){
+                        var song = "";
+                        for (var i = 0; i < pauses.length; i++) {
+                            for (var j = 0; j < pauses[i].length; j++) {
+                            song += notes[i][j].toString() + pauses[i][j].toString();
+                            }
+                        song += notes[i][notes[i].length-1].toString() + ';';
+                        }
+                        console.log(song);
+                        setCookie('Song',song,5)
+                    });
+            var loadSong = r.rect(400,500,100,50,10)
+                    .attr({fill:"#FFFFFF"})
+                    .click(function(){
+                        var cookie = getCookie('Song');
+                        console.log(cookie);
+                    });
+            function setCookie(c_name,value,exdays){
+                var exdate=new Date();
+                exdate.setDate(exdate.getDate() + exdays);
+                var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
+                document.cookie=c_name + "=" + c_value;
+            }
+            function getCookie(c_name){
+                var c_value = document.cookie;
+                var c_start = c_value.indexOf(" " + c_name + "=");
+                if (c_start == -1){
+                    c_start = c_value.indexOf(c_name + "=");
+                }
+                if (c_start == -1){
+                    c_value = null;
+                }
+                else{
+                    c_start = c_value.indexOf("=", c_start) + 1;
+                    var c_end = c_value.indexOf(";", c_start);
+                    if (c_end == -1)
+                    {
+                        c_end = c_value.length;
+                    }
+                    c_value = unescape(c_value.substring(c_start,c_end));
+                }
+                return c_value;
             }
 
             // Submit button
