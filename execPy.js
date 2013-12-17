@@ -8,7 +8,7 @@ this.playSong = function (song) {
 }
 var callback=function(error,stdout,stderr){
 	if(stdout){console.log('Out: ' + stdout);}
-    if(strerr){console.log('Err: ' + stderr);}
+    if(stderr){console.log('Err: ' + stderr);}
     if (error !== null) {
       console.log('exec error: ' + error);
     }
