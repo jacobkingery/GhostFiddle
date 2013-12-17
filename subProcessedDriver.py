@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from Adafruit_PWM_Servo_Driver import PWM
-from time import clock
+from time import sleep
 import sys
 pwm = PWM(0x40, debug=True)
 noteLen = .5
@@ -16,13 +16,8 @@ def playSong(song):
 		for j in range(len(song)):
 	#		print(j, int(song[j][i]))
 			pwm.setPWM(j, 0, 3000*int(song[j][i]))
-		wait(noteLen*(not i%2) + breakLen*(i%2))
-	wait(4)
-
-def wait(duration):
-	start = clock()
-	while(clock() - start < duration):
-		pass
+		sleep(noteLen*(not i%2) + breakLen*(i%2))
+	sleep(4)
 
 if __name__ == "__main__":
 	print("Driver Ran")
