@@ -1,4 +1,4 @@
-var exec    =   require('child_process').exec;
+var exec = require('child_process').exec;
 var cmdQueue = new Array();
 
 this.playSong = function (song) {
@@ -7,18 +7,19 @@ this.playSong = function (song) {
 	processQueue();
 }
 var callback=function(error,stdout,stderr){
-	console.log('Out: ' + stdout);
-    console.log('Err: ' + stderr);
+	if(stdout){console.log('Out: ' + stdout);}
+    if(strerr){console.log('Err: ' + stderr);}
     if (error !== null) {
       console.log('exec error: ' + error);
     }
+    cmdQueue.shift();
     processQueue();
 }
 function processQueue(){
-	if(cmdQueue.length > 0){
+	if(cmdQueue.length > 0 && cmdQueue[0] == 'pending'){
 		var song = cmdQueue[0].song;
+		cmdQueue[0].state='playing';
 		console.log("exec:")
 		exec('python subProcessedDriver.py "'+song+'"',callback);
-
 	}
 }
