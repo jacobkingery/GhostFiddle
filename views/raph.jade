@@ -253,54 +253,6 @@ block header_scripts
                             })
                         };
 
-            /*
-            //Save Load Cookies
-            var saveSong = r.rect(700,450,100,50,10)
-                    .attr({fill:"#000055"})
-                    .click(function(){
-                        var song = "";
-                        for (var i = 0; i < pauses.length; i++) {
-                            for (var j = 0; j < pauses[i].length; j++) {
-                            song += notes[i][j].toString() + pauses[i][j].toString();
-                            }
-                        song += notes[i][notes[i].length-1].toString() + ';';
-                        }
-                        console.log(song);
-                        setCookie('Song',song,5)
-                    });
-            var loadSong = r.rect(800,450,100,50,10)
-                    .attr({fill:"#FFFFFF"})
-                    .click(function(){
-                        var cookie = getCookie('Song');
-                        console.log(cookie);
-                    });
-            function setCookie(c_name,value,exdays){
-                var exdate=new Date();
-                exdate.setDate(exdate.getDate() + exdays);
-                var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-                document.cookie=c_name + "=" + c_value;
-            }
-            function getCookie(c_name){
-                var c_value = document.cookie;
-                var c_start = c_value.indexOf(" " + c_name + "=");
-                if (c_start == -1){
-                    c_start = c_value.indexOf(c_name + "=");
-                }
-                if (c_start == -1){
-                    c_value = null;
-                }
-                else{
-                    c_start = c_value.indexOf("=", c_start) + 1;
-                    var c_end = c_value.indexOf(";", c_start);
-                    if (c_end == -1)
-                    {
-                        c_end = c_value.length;
-                    }
-                    c_value = unescape(c_value.substring(c_start,c_end));
-                }
-                return c_value;
-            }
-            */
             // Reset function
             var resetAll = function() {
                 for (var i = 0; i < numGlass; i++){
