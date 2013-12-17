@@ -3,8 +3,8 @@
 from time import sleep
 import sys
 #pwm = PWM(0x40, debug=True)
-noteLen = .02
-breakLen = .01
+noteLen = .5
+breakLen = .1
 
 def playSong(song):
 	f = open('SongsPlayed.txt','a')
