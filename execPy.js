@@ -17,7 +17,7 @@ function processQueue(){
 	if(cmdQueue.length > 0){
 		var song = cmdQueue.shift().song;
 		console.log("exec:")
-		exec('python subProcessedDriver.py '+song,[{timeout:100}],callback);
+		exec('python subProcessedDriver.py "'+song+'"', callback);
 
 	}
 }
