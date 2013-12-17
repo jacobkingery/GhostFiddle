@@ -16,7 +16,7 @@ var callback=function(error,stdout,stderr){
     processQueue();
 }
 function processQueue(){
-	if(cmdQueue.length > 0 && cmdQueue[0] == 'pending'){
+	if(cmdQueue.length > 0 && cmdQueue[0].state == 'pending'){
 		var song = cmdQueue[0].song;
 		cmdQueue[0].state='playing';
 		console.log("exec:")
