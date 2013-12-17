@@ -28,8 +28,8 @@ app.get('/', raph.line);
 app.get('/success', raph.success);
 app.get('/failure', raph.failure);
 
-app.post('/submit', raph.addSong());
-// app.post('/submit', raph.addPreset()); // Used to write presets and save to file
+ app.post('/submit', raph.addSong());
+//app.post('/submit', raph.addPreset()); // Used to write presets and save to file
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
