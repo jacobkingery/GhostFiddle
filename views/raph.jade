@@ -8,7 +8,7 @@ block header_scripts
 
         window.onload = function() {
             // Data storage    
-            var lenSong = 8,
+            var lenSong = 12,
                 numGlass = 8,
                 notes = [],
                 pauses = [];
@@ -31,14 +31,14 @@ block header_scripts
                 horSpacing = 58,
                 vertSpacing = 50,
                 horOffset = 80,
-                vertOffset = 20,
+                vertOffset = 40,
                 noteNames = ['D', 'C#', 'B', 'A', 'G', 'F#', 'E', 'D'],
                 //fills = ['#0b7661','#0e8d74','#10a587','#12bc9a','#14d3ad','#18e9bf', '#77f2da', '#acf7c8'],
                 fills = ['#87E8D6','#FAE13C','#9D3CE8','#3CFA58','#E82F85','#493CFF','#E3710B','#EEEEEE'],
                 glasses={};
 
             // Raphael canvas
-            var W = lenSong*horSpacing + horOffset,
+            var W = lenSong*horSpacing + horOffset*9,
                 H = numGlass*vertSpacing + vertOffset + 100,
                 //- W = 1460,
                 //- H = 490,
@@ -81,7 +81,9 @@ block header_scripts
                             pathArray[1][1] = horOffset+horSpacing*newNote.y+dx;
                             if(horSpacing*newNote.y+dx > horSpacing*lenSong){
                                 changeSongLength(Math.round((horSpacing*newNote.y+dx)/horSpacing)+1);
+                                lenTab.resetPlacement();
                             }
+
                             //pathArray[1][2] = vertOffset+vertSpacing*newNote.x+dy;
 
                             newNote.path.attr({path:pathArray});
@@ -189,9 +191,7 @@ block header_scripts
                             }
                         }
                         lenSong = newLenSong;
-                        r.setSize(8*horOffset+lenSong*horSpacing,H);
-                        lenDownRect.attr({'x':horOffset+lenSong*horSpacing});  
-                        lenUpRect.attr({'x':horOffset+lenSong*horSpacing});   
+                        r.setSize(9*horOffset+lenSong*horSpacing,H);  
                     }
                     else if(newLenSong < lenSong){
                         if(newLenSong<1){newLenSong = 1;}
@@ -204,24 +204,57 @@ block header_scripts
                             }
                         }
                         lenSong = newLenSong;
-                        r.setSize(8*horOffset+lenSong*horSpacing,H);
-                        lenDownRect.attr({'x':horOffset+lenSong*horSpacing});  
-                        lenUpRect.attr({'x':horOffset+lenSong*horSpacing});                  
+                        r.setSize(9*horOffset+lenSong*horSpacing,H);                 
                     }
             };
 
-            //Change Song Length Button
-            var lenUpRect = r.rect(horOffset+lenSong*horSpacing, 150, 50, 50, 10)
-                .attr({fill:"#005500"})
-                .click(function(){changeSongLength(lenSong+8);
-                    });
-            var lenDownRect = r.rect(horOffset+lenSong*horSpacing, 240, 50, 50, 10)
-                .attr({fill:"#550000"})
-                .click(function(){changeSongLength(lenSong-8);
-                    });
+            //Song Length Tab
+            var tabVertOffset = vertOffset - 20;
+            var tabHorOffset = horOffset - 40;
+            var lenTab = {"path":r.path("M "+(tabHorOffset+lenSong*horSpacing-5)+" "+(tabVertOffset-10)+
+                               " L "+(tabHorOffset+lenSong*horSpacing-5)+" "+(tabVertOffset-5)+ 
+                               " L "+(tabHorOffset+lenSong*horSpacing)+" "+(tabVertOffset)+ 
+                               " L "+(tabHorOffset+lenSong*horSpacing+5)+" "+(tabVertOffset-5)+ 
+                               " L "+(tabHorOffset+lenSong*horSpacing+5)+" "+(tabVertOffset-10)+" Z")
+                        .attr({'stroke-width':rectHeight, stroke:'#FFFFFF'})
+                        .drag(function(dx,dy){
+                                var pathArray = this.attr("path");
 
+                                pathArray[0][1] = this.cx+dx - 5;
+                                pathArray[1][1] = this.cx+dx - 5;
+                                pathArray[2][1] = this.cx+dx;
+                                pathArray[3][1] = this.cx+dx + 5;
+                                pathArray[4][1] = this.cx+dx + 5;
+                                this.attr({path:pathArray});
+                                if(horSpacing*this.cx+dx > horSpacing*lenSong){
+                                    changeSongLength(Math.round((this.cx+dx )/horSpacing)-1);
+                                }
+                            },function(){
+                                var pathArray = this.attr("path");
+                                this.cx = pathArray[2][1];
+                            },function(){
+                                var pathArray = this.attr("path");
+                                pathArray[0][1] = tabHorOffset+lenSong*horSpacing - 5;
+                                pathArray[1][1] = tabHorOffset+lenSong*horSpacing - 5;
+                                pathArray[2][1] = tabHorOffset+lenSong*horSpacing;
+                                pathArray[3][1] = tabHorOffset+lenSong*horSpacing + 5;
+                                pathArray[4][1] = tabHorOffset+lenSong*horSpacing + 5;
+                                this.attr({path:pathArray});
+                            }),
+                            "resetPlacement": (function(){
+                                var pathArray = this.path.attr("path");
+                                pathArray[0][1] = tabHorOffset+lenSong*horSpacing - 5;
+                                pathArray[1][1] = tabHorOffset+lenSong*horSpacing - 5;
+                                pathArray[2][1] = tabHorOffset+lenSong*horSpacing;
+                                pathArray[3][1] = tabHorOffset+lenSong*horSpacing + 5;
+                                pathArray[4][1] = tabHorOffset+lenSong*horSpacing + 5;
+                                this.path.attr({path:pathArray});
+                            })
+                        };
+
+            /*
             //Save Load Cookies
-            var saveSong = r.rect(300,500,100,50,10)
+            var saveSong = r.rect(700,450,100,50,10)
                     .attr({fill:"#000055"})
                     .click(function(){
                         var song = "";
@@ -234,7 +267,7 @@ block header_scripts
                         console.log(song);
                         setCookie('Song',song,5)
                     });
-            var loadSong = r.rect(400,500,100,50,10)
+            var loadSong = r.rect(800,450,100,50,10)
                     .attr({fill:"#FFFFFF"})
                     .click(function(){
                         var cookie = getCookie('Song');
@@ -266,7 +299,7 @@ block header_scripts
                 }
                 return c_value;
             }
-
+            */
             // Reset function
             var resetAll = function() {
                 for (var i = 0; i < numGlass; i++){
@@ -307,10 +340,12 @@ block header_scripts
                 var p = "";
                 var firstNote = 0;
                 var lastNote = 0;
+                var foundFirst = 0;
 
                 for (var j = 0; j < lenSong; j++){
                     for (var i = 0; i < numGlass; i++){
-                        if (notes[i][j] && !firstNote) {firstNote = j};
+                        if (notes[i][j] && !foundFirst) {firstNote = j;
+                            foundFirst = 1;};
                         if (notes[i][j]) {lastNote = j};
                     }
                 }
@@ -319,11 +354,29 @@ block header_scripts
                     n += notes[i].join('').slice(firstNote, lastNote+1)+"\n";
                     p += pauses[i].join('').slice(firstNote, lastNote)+"\n";                
                 }
-                
+                console.log(n);
+                console.log(p);
                 document.getElementById('notes').value = n;
                 document.getElementById('pauses').value = p;
                 document.getElementById('newSong').submit();
             });
+            // Load Song
+            var loadSong = function(song){
+                changeSongLength(Math.floor((song[0].length+1)/2));
+                lenTab.resetPlacement();
+                for (i=0; i<song.length; i++) {
+                    var realJ = 0;
+                    for (j=0; j<song[i].length; j+=2) {
+                        noteij = +song[i][j];
+                        if (noteij) {glasses[i].glassNotes[realJ].highlight();}
+                        if (j < song[i].length-1) {
+                            pauseij = +song[i][j+1];
+                            if (pauseij) {glasses[i].glassPause[realJ].highlight();}
+                        }
+                        realJ += 1;
+                    }
+                }
+            };
 
             // Reset button
             var resBtnVertOffset = subBtnVertOffset,
@@ -404,18 +457,7 @@ block header_scripts
                 resetAll();
                 var randInt = Math.floor(Math.random() * presets.length);
                 var preset = presets[randInt];
-                for (i=0; i<preset.length; i++) {
-                    var realJ = 0;
-                    for (j=0; j<preset[i].length; j+=2) {
-                        noteij = +preset[i][j];
-                        if (noteij) {glasses[i].glassNotes[realJ].highlight();}
-                        if (j < preset[i].length-1) {
-                            pauseij = +preset[i][j+1];
-                            if (pauseij) {glasses[i].glassPause[realJ].highlight();}
-                        }
-                        realJ += 1;
-                    }
-                }
+                loadSong(preset);
                 
             });
 
