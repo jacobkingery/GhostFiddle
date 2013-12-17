@@ -24,6 +24,14 @@ a {
   height: 200px;
 }
 
+#intro {
+  position: absolute;
+  top: 20px;
+  left: 550px;
+  clear: both;
+  color: #FFFFFF;
+}
+
 #footer {
     position: absolute;
     left: 15px;
