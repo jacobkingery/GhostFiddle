@@ -7,6 +7,7 @@ block header_scripts
     script.
 
         window.onload = function() {
+
             // Data storage
             var lenSong = 12,
                 numGlass = 8,
@@ -181,7 +182,7 @@ block header_scripts
             //Changes the number of notes displayed
             var changeSongLength = function(newLenSong){
                     if (newLenSong > lenSong){
-                        if(newLenSong>50){newLenSong = 50;}
+                        if(newLenSong>100){newLenSong = 100;}
                         for(var j = lenSong; j < newLenSong; j++){
                             for(var i = 0; i <numGlass; i++){
                                 notes[i].push(0);
@@ -491,6 +492,15 @@ block header_scripts
 block content
 
     img(src="/images/smokeGhost.jpg", id="logo")
+    div(id="intro")
+        <h3><strong>Welcome to Ghost Fiddle</strong>, the site that allows you to compose a simple song for our wine glass playing robot!</h3>
+        <p>To get started composing your song check out any of the following options:</p>
+        <ul>
+        <li>Click on circles to fill in notes.</li>
+        <li>Click and drag to create sustained notes.</li>
+        <li>Click on filled in circles or lines to remove unwanted notes.</li>
+        <li>Drag the white tab to lengthen or shorten your composition</li>
+        </ul>
     div(id="raphHolder")
     div(id="formHolder")
         form(id="newSong", method="post", action="/submit")
