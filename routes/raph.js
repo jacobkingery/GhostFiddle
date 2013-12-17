@@ -1,13 +1,5 @@
 var fs = require('fs');
-var python = require('../python.js').shell;
-var callback = function(err, data) {
-    if (err) {
-        console.error(err);
-    } else {
-        //console.log(data.toString('utf8') + 'Finished python line\n');
-    }
-};
-python('from subProcessedDriver import playSong', callback);
+var python = require('../execPy.js').playSong;
 
 exports.line = function(req, res) {
     res.render('raph', {title: 'Raphael Line Test'});
@@ -36,8 +28,8 @@ exports.addSong = function() {
             }
             song += notes[i][notes[i].length-1] + ';';
         }
-        var command = 'playSong("'+song+'")';
-        python(command,callback);
+        
+        python(song);
         
         res.location('success');
         res.redirect('success');
