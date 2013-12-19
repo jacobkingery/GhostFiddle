@@ -24,7 +24,7 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', raph.line);
+app.get('/', raph.compose);
 app.get('/success', raph.success);
 app.get('/failure', raph.failure);
 
