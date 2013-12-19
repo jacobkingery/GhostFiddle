@@ -1,8 +1,8 @@
 var fs = require('fs');
 var python = require('../execPy.js').playSong;
 
-exports.line = function(req, res) {
-    res.render('raph', {title: 'Raphael Line Test'});
+exports.compose = function(req, res) {
+    res.render('raph', {title: 'Ghost Fiddle'});
 };
 
 exports.success = function(req, res) {
